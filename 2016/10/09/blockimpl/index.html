@@ -1,0 +1,901 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+    <meta name="description" content="薛冰心的博客" />
+
+
+
+  <meta name="keywords" content="C,Objective-C,iOS," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.2" />
+
+
+
+
+  <title> Block 底层探秘 // 心辰·Dev </title>
+</head>
+
+<body>
+<!--[if lte IE 8]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari." style='margin-left:auto;margin-right:auto;display: block;'/></a></div> <![endif]-->
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">心辰·Dev</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-tags">
+        <a href="/tags">
+          <i class="menu-item-icon icon-tags"></i> <br />
+          标签
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              Block 底层探秘
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-10-09
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <h3 id="Block底层实现">Block底层实现</h3><p>运用<code>clang -rewrite-objc</code>命令可以把 Objective-C 代码转换为 C/C++ 代码，从而展示 Block 的底层实现。以下是一个最普通的 Block 代码示例：    </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">void</span> (^blk)(<span class="keyword">void</span>) = ^&#123;<span class="built_in">printf</span>(<span class="string">"Block\n"</span>);&#125;;</span><br><span class="line">    blk();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过<code>clang -rewrite-objc</code>的转换，可以得到 Block 结构体的声明：    </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __block_impl &#123;</span><br><span class="line">    <span class="keyword">void</span> *isa;</span><br><span class="line">    <span class="keyword">int</span> Flags;</span><br><span class="line">    <span class="keyword">int</span> Reserved;</span><br><span class="line">    <span class="keyword">void</span> *FuncPtr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>具体到名为 blk 的 Block, 它的结构体实现如下：   </p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __main_block_impl_0 &#123;</span><br><span class="line">    <span class="keyword">struct</span> __block_impl <span class="keyword">impl</span>;</span><br><span class="line">    <span class="keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">    __main_block_impl_0(void *fp, <span class="keyword">struct</span> __main_block_desc_0 *desc, <span class="keyword">int</span> flags=<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">impl</span>.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">        <span class="keyword">impl</span>.Flags = flags;</span><br><span class="line">        <span class="keyword">impl</span>.FuncPtr = fp;</span><br><span class="line">        Desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中在构造函数中初始化<code>__main_block_impl_0</code>的成员变量。注意到 impl 结构体的 isa 变量指向<code>_NSConcreteStackBlock</code>，此<code>__main_block_impl_0</code>结构体相当于基于<code>objc_object</code>结构体的类对象结构体，说明该 Block 是一个位于栈上的对象。<strong>Block 的实质就是对象。</strong><br>当 Block 是全局变量时，isa 会指向<code>_NSConcreteGlobalBlock</code>，当 Block 被 copy 到堆(heap)时，isa 会指向 <code>_NSConcreteMallocBlock</code>。<br>另外，Block 里面包含的匿名函数被转换为一个静态函数，实现如下：      </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_func_0(<span class="keyword">struct</span> __main_block_impl_0 *__cself) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Block\n"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结构体<code>__main_block_desc_0</code>包含了该 Block 的大小：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">__main_block_desc_0</span> </span>&#123;</span><br><span class="line">    size_t reserved;</span><br><span class="line">    size_t <span class="type">Block_size</span>;</span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">// 初始化 __main_block_desc_0</span></span><br><span class="line">__main_block_desc_0_DATA = &#123; <span class="number">0</span>, <span class="built_in">sizeof</span>(<span class="class"><span class="keyword">struct</span> <span class="title">__main_block_impl_0</span>)&#125;;</span></span><br></pre></td></tr></table></figure>
+<p>综合以上的实现，main 函数中的 Objc 代码被转换为：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int main<span class="list">(<span class="keyword">int</span> argc, const char <span class="variable">* argv[]) &#123;</span><br><span class="line">    // 去掉一系列类型转换，相当于</span><br><span class="line">    // void (^blk)(void) = ^&#123;printf("Block\n");&#125;;</span><br><span class="line">    void (*</span>blk)</span><span class="list">(<span class="keyword">void</span>)</span> = <span class="list">(<span class="list">(<span class="keyword">void</span> <span class="list">(<span class="keyword">*</span>)</span><span class="list">()</span>)</span><span class="keyword">&amp;__main_block_impl_0</span><span class="list">(<span class="list">(<span class="keyword">void</span> <span class="variable">*)__main_block_func_0, &amp;__main_block_desc_0_DATA));</span><br><span class="line">    // blk();</span><br><span class="line">    // (*</span>blk-&gt;impl.FuncPtr)</span><span class="list">(<span class="keyword">blk</span>)</span><span class="comment">;</span></span><br><span class="line">    <span class="list">(<span class="list">(<span class="keyword">void</span> <span class="list">(<span class="keyword">*</span>)</span><span class="list">(<span class="keyword">__block_impl</span> <span class="variable">*))((__block_impl *</span>)</span>blk)</span>-&gt;FuncPtr)</span><span class="list">(<span class="list">(<span class="keyword">__block_impl</span> <span class="variable">*)blk);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span></span></span></span></span></span><br></pre></td></tr></table></figure>
+<h3 id="截获自动变量">截获自动变量</h3><p>待转换的 Objective-C 代码如下所示：    </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> dmy = <span class="number">250</span>;</span><br><span class="line">    <span class="keyword">int</span> val = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *hhh = <span class="string">"val = %d\n"</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">void</span> (*blk)(<span class="keyword">void</span>) = ^&#123;</span><br><span class="line">        <span class="built_in">printf</span>(hhh, val);</span><br><span class="line">    &#125;;</span><br><span class="line">    blk();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过转换之后，<code>__main_block_impl_0</code>结构体对比上一节的实现有所变化：     </p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __main_block_impl_0 &#123;</span><br><span class="line">    <span class="keyword">struct</span> __block_impl <span class="keyword">impl</span>;</span><br><span class="line">    <span class="keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *hhh;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">    __main_block_impl_0(void *fp, <span class="keyword">struct</span> __main_block_desc_0 *desc, <span class="keyword">const</span> <span class="keyword">char</span> *_hhh, <span class="keyword">int</span> _val, <span class="keyword">int</span> flags=<span class="number">0</span>) : hhh(_hhh), val(_val) &#123;</span><br><span class="line">        <span class="keyword">impl</span>.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">        <span class="keyword">impl</span>.Flags = flags;</span><br><span class="line">        <span class="keyword">impl</span>.FuncPtr = fp;</span><br><span class="line">        Desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Block 中使用的局部变量加入到了结构体的成员变量中，只捕捉了实际使用到的变量。<br>Block 匿名函数转换为如下所示的函数：    </p>
+<figure class="highlight ocaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">static void __main_block_func_0(<span class="keyword">struct</span> __main_block_impl_0 *__cself) &#123;</span><br><span class="line">    const <span class="built_in">char</span> *hhh = __cself-&gt;hhh;</span><br><span class="line">    <span class="built_in">int</span> <span class="keyword">val</span> = __cself-&gt;<span class="keyword">val</span>;</span><br><span class="line">    printf(hhh, <span class="keyword">val</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用<code>__main_block_impl_0</code>中的成员变量给函数中的局部变量赋值，所以函数中使用的变量值始终等于声明 Block 时捕获到的该变量的值。因为 C 语言不支持<code>a[] = b[]</code>，在 Block 中无法使用 C 语言数组。如果在 Block 中对局部变量进行赋值，因为 Block 不写回对局部变量的修改，会导致一个编译期错误。<br>最后 main 函数中的代码被转换为：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int main<span class="list">(<span class="keyword">int</span> argc, const char <span class="variable">* argv[]) &#123;</span><br><span class="line">    int dmy = 250;</span><br><span class="line">    int val = 10;</span><br><span class="line">    const char *</span>hhh = <span class="string">"val = %d\n"</span><span class="comment">;</span></span><br><span class="line">    void <span class="list">(<span class="keyword">*blk</span>)</span><span class="list">(<span class="keyword">void</span>)</span> = <span class="list">(<span class="list">(<span class="keyword">void</span> <span class="list">(<span class="keyword">*</span>)</span><span class="list">()</span>)</span><span class="keyword">&amp;__main_block_impl_0</span><span class="list">(<span class="list">(<span class="keyword">void</span> <span class="variable">*)__main_block_func_0, &amp;__main_block_desc_0_DATA, hhh, val));</span><br><span class="line">    ((void (*</span>)</span><span class="list">(<span class="keyword">__block_impl</span> <span class="variable">*))((__block_impl *</span>)</span>blk)</span>-&gt;FuncPtr)</span><span class="list">(<span class="list">(<span class="keyword">__block_impl</span> <span class="variable">*)blk);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span></span></span></span></span><br></pre></td></tr></table></figure></p>
+<p>说明 Block 构造时传入的参数是 Block 声明时还未改变值的局部变量。</p>
+<h3 id="截获静态变量">截获静态变量</h3><p>如果在 Block 中使用了静态变量，<code>__main_block_impl_0</code>中会增加一个成员变量，用来保存指向该静态变量的<strong>指针</strong>。在 Block 匿名函数的实现中，使用这个指针变量操作值的改变和赋值。在声明带有静态变量的 Block 时，<code>__main_block_impl_0</code>的构造函数通过传递指针实现对静态变量的捕获。如下：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int main<span class="list">(<span class="keyword">int</span> argc, const char <span class="variable">* argv[]) &#123;</span><br><span class="line">    static int sta_val = 253;</span><br><span class="line">    </span><br><span class="line">    void (*</span>blk)</span><span class="list">(<span class="keyword">void</span>)</span> = <span class="list">(<span class="list">(<span class="keyword">void</span> <span class="list">(<span class="keyword">*</span>)</span><span class="list">()</span>)</span><span class="keyword">&amp;__main_block_impl_0</span><span class="list">(<span class="list">(<span class="keyword">void</span> <span class="variable">*)__main_block_func_0, &amp;__main_block_desc_0_DATA, &amp;sta_val));</span><br><span class="line">    </span><br><span class="line">    ((void (*</span>)</span><span class="list">(<span class="keyword">__block_impl</span> <span class="variable">*))((__block_impl *</span>)</span>blk)</span>-&gt;FuncPtr)</span><span class="list">(<span class="list">(<span class="keyword">__block_impl</span> <span class="variable">*)blk);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span></span></span></span><br></pre></td></tr></table></figure>
+<h3 id="__block_变量">__block 变量</h3><p>在变量捕获之后，对于自动变量，不能再改变其值。如果想改变变量的值，可以考虑使用静态变量或全局变量，实际通过操作指针来改变其值。如果不想使用静态变量，__block 变量可以成为另一个选择。<br>如果捕获了 __block 变量，代码转换后会生成一个新的 __block变量结构体，如下所示：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __Block_byref_block_val_0 &#123;</span><br><span class="line">    <span class="keyword">void</span> *__isa;</span><br><span class="line">    __Block_byref_block_val_0 *__forwarding;</span><br><span class="line">    <span class="keyword">int</span> __flags;</span><br><span class="line">    <span class="keyword">int</span> __size;</span><br><span class="line">    <span class="comment">// 存储变量</span></span><br><span class="line">    <span class="keyword">int</span> block_val;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中成员变量<code>block_val</code>存储了 __block 变量的值，<code>__forwarding</code>指针指向自身。在 Block 被 copy 到堆上后，它指向的是堆上的 __block 变量结构体实例。这样可以在 Block 之内和之外访问 __block 变量并修改。<br>在主体 Block 的实现结构体中，增加<code>block_val</code>成员变量保存指向 __block 变量的指针：    </p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __main_block_impl_0 &#123;</span><br><span class="line">    <span class="keyword">struct</span> __block_impl <span class="keyword">impl</span>;</span><br><span class="line">    <span class="keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">    __Block_byref_block_val_0 *block_val;</span><br><span class="line">    __main_block_impl_0(void *fp, <span class="keyword">struct</span> __main_block_desc_0 *desc, __Block_byref_block_val_0 *_block_val, <span class="keyword">int</span> flags=<span class="number">0</span>) : block_val(_block_val-&gt;__forwarding) &#123;</span><br><span class="line">        <span class="keyword">impl</span>.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">        <span class="keyword">impl</span>.Flags = flags;</span><br><span class="line">        <span class="keyword">impl</span>.FuncPtr = fp;</span><br><span class="line">        Desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>最终在 main 函数中，__block 变量被转换为<code>__Block_byref_block_val_0</code>结构体在栈上的一个实例。</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// __block int block_val = 250;</span></span><br><span class="line">__attribute__<span class="comment">((__blocks__(byref)</span>)) __Block_byref_block_val_<span class="number">0</span> block_val = &#123;<span class="comment">(void*)</span><span class="number">0</span>,<span class="comment">(__Block_byref_block_val_0 *)</span>&amp;block_val, <span class="number">0</span>, sizeof<span class="comment">(__Block_byref_block_val_0)</span>, <span class="number">250</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>与 __block 变量类似，Block 在捕获对象时，也会在主 Block 结构体中生成一个 id 类型的成员变量，保存捕获的对象。同时会生成<code>__main_block_copy_0()</code>和<code>__main_block_dispose_0()</code>两个静态函数。<code>__main_block_copy_0()</code>在 Block 拷贝到堆上时调用，作用是把目标对象 dst 中的 block_val 赋给 Block 结构体中的成员变量 block_var，并使其持有该对象。数字<code>3</code>表示捕获的变量是一个普通对象，数字<code>8</code>表示捕获的变量是一个 __block 变量。<code>__main_block_dispose_0</code>在 Block 在堆上被销毁时调用，作用是释放 Block 结构体中的成员变量 block_var 持有的对象。</p>
+<figure class="highlight thrift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">static <span class="keyword">void</span> __main_block_copy_0(<span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_0</span>*dst, struct __main_block_impl_0*src) </span>&#123;_Block_object_assign((<span class="keyword">void</span>*)&amp;dst-&gt;obj, (<span class="keyword">void</span>*)src-&gt;obj, <span class="number">3</span><span class="comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);&#125;</span><br><span class="line"></span><br><span class="line">static <span class="keyword">void</span> __main_block_dispose_0(<span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_0</span>*src) </span>&#123;_Block_object_dispose((<span class="keyword">void</span>*)src-&gt;obj, <span class="number">3</span><span class="comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);&#125;</span><br></pre></td></tr></table></figure>
+<p><code>__main_block_desc_0</code>结构体增加了两个函数指针类型的成员变量，分别指向 copy 和 dispose 函数。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">struct</span> __main_block_desc_0 &#123;</span><br><span class="line">    size_t reserved;</span><br><span class="line">    size_t Block_size;</span><br><span class="line">    <span class="keyword">void</span> (*<span class="keyword">copy</span>)(<span class="keyword">struct</span> __main_block_impl_0*, <span class="keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">    <span class="keyword">void</span> (*dispose)(<span class="keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">&#125; __main_block_desc_0_DATA = &#123; <span class="number">0</span>, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="消除循环引用">消除循环引用</h3><ul>
+<li><p>捕获<code>self</code>引起循环引用。<br>  当 Block 从栈上复制到堆上时，捕获的<code>strong</code>对象将被 Block 持有。如果该对象再持有 Block, 就会引起循环引用的问题，两者内存将无法正常释放。这种内存泄漏常见的出现场景就是某个类持有 Block, 而 Block 中又捕获了强引用的<code>self</code>对象。<br>  解决方式即把<code>self</code>赋值给一个用<code>__weak</code>修饰符声明的<code>weakSelf</code>变量，并在 Block 中使用该<code>weakSelf</code>变量。当 Block 存在时，<code>self</code>对象始终存在，因此不需判断被赋值后的<code>weakSelf</code>是否为空。</p>
+  <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)init &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">id</span> __<span class="keyword">weak</span> weakSelf = <span class="keyword">self</span>;</span><br><span class="line">    Blk blk0 = ^&#123;<span class="built_in">NSLog</span>(<span class="string">@"self = %@"</span>, weakSelf);&#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  如果需要在 Block 中多次使用<code>weakSelf</code>，最好在 Block 里先将<code>weakSelf</code>赋给一个<code>__strong</code>修饰的<code>strongSelf</code>，防止<code>weakSelf</code>提前 nil out。这个技巧被称为”strong weak dance”，在 AFNetworking 源码中有所体现：</p>
+  <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">__<span class="keyword">weak</span> __<span class="keyword">typeof</span>(<span class="keyword">self</span>)weakSelf = <span class="keyword">self</span>;</span><br><span class="line">   AFNetworkReachabilityStatusBlock callback = ^(AFNetworkReachabilityStatus status) &#123;</span><br><span class="line">       __<span class="keyword">strong</span> __<span class="keyword">typeof</span>(weakSelf)strongSelf = weakSelf;</span><br><span class="line"></span><br><span class="line">       strongSelf<span class="variable">.networkReachabilityStatus</span> = status;</span><br><span class="line">       <span class="keyword">if</span> (strongSelf<span class="variable">.networkReachabilityStatusBlock</span>) &#123;</span><br><span class="line">           strongSelf<span class="variable">.networkReachabilityStatusBlock</span>(status);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>__block 变量引起循环引用<br>  当某类<code>Obj</code>的对象持有 Block, Block 中又持有 __block 变量，__block 变量持有<code>Obj</code>对象，这样会造成循环引用。如图：<br>  <img src="http://7xqdn8.com1.z0.glb.clouddn.com/2016-10-1009.30.14.png" alt="block"><br>  为了消除循环引用，在 Block 函数中通过将<code>nil</code>赋值给 __block 变量，可以让 __block 变量释放持有的<code>Obj</code>对象，即达成目标。</p>
+  <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">id</span>)init &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    __block <span class="keyword">id</span> tmp = <span class="keyword">self</span>;</span><br><span class="line">    Blk blk0 = ^&#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"self = %@"</span>, tmp);</span><br><span class="line">        tmp = <span class="literal">nil</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="使用___block_变量的好处">使用 __block 变量的好处</h3><ul>
+<li>可以通过控制 __block 变量来控制对象的生命周期。</li>
+<li>在不支持 __weak 修饰符的更早的 OS 版本，用 __block 替代 __unsafe_unretained 修饰符以避免迷途指针(dangling pointer)的问题。</li>
+</ul>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/"> #C </a>
+          
+            <a href="/tags/Objective-C/"> #Objective-C </a>
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/02/desing-pattern1/">iOS 开发常见设计模式解析 | 创建型模式</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/22/openear/">OpenEar 语音识别框架使用指南</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+
+        
+      </div>
+
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg" alt="BingXin Xue" />
+          <p class="site-author-name">BingXin Xue</p>
+        </div>
+        <p class="site-description motion-element">薛冰心的博客</p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+              <a href="https://github.com/EdwardBX" target="_blank">github</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://weibo.com/u/5106446763" target="_blank">weibo</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.douban.com/people/127211499/" target="_blank">douban</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.zhihu.com/people/xbx2014" target="_blank">zhihu</a>
+            </span>
+            
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Block底层实现"><span class="nav-number">1.</span> <span class="nav-text">Block底层实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#截获自动变量"><span class="nav-number">2.</span> <span class="nav-text">截获自动变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#截获静态变量"><span class="nav-number">3.</span> <span class="nav-text">截获静态变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#__block_变量"><span class="nav-number">4.</span> <span class="nav-text">__block 变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消除循环引用"><span class="nav-number">5.</span> <span class="nav-text">消除循环引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用___block_变量的好处"><span class="nav-number">6.</span> <span class="nav-text">使用 __block 变量的好处</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp;  2014 - 
+  2016
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">BingXin Xue</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+  
+</body>
+</html>

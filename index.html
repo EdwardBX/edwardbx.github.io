@@ -1,0 +1,1191 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+    <meta name="description" content="薛冰心的博客" />
+
+
+
+  <meta name="keywords" content="Hexo,next" />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.2" />
+
+
+
+
+  <title> 心辰·Dev </title>
+</head>
+
+<body>
+<!--[if lte IE 8]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari." style='margin-left:auto;margin-right:auto;display: block;'/></a></div> <![endif]-->
+  <div class="container one-column 
+   page-home 
+">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">心辰·Dev</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-tags">
+        <a href="/tags">
+          <i class="menu-item-icon icon-tags"></i> <br />
+          标签
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+  <div id="posts" class="posts-expand">
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/11/07/design-pattern2/">
+                iOS 开发常见设计模式解析 | 结构型模式
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-11-07
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="适配器">适配器</h3><h4 id="定义">定义</h4><p>将一个类的接口转换成客户希望的另外一个接口。适配器模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
+<h4 id="类图">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/对象适配器.png" alt="适配器"><br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/类适配器.png" alt="类适配器"><br>目标(Target)定义了客户可以使用的与特定领域相关的接口。被适配者(Adaptee)定义着已经存在的待适配的接口，适配器(Adapter)对被适配者的接口和目标接口进行适配。适配器使用多重继承进行适配的是类适配器，而依赖于对象组合进行适配的是对象适配器。</p>
+<h4 id="实践">实践</h4><p>Objc 语言本身不支持多重继承，但它支持灵活地定义协议(protocol)，类似于 Java 语言中的接口(interface)，使得一系列方法声明可以独立于类继承之外，通过遵从协议同样可以形成多重继承，实现对象适配器。虽然不符合适配器模式的结构描述，但其思想仍然是使原本接口不匹配的类可以协同工作。<br>在 iOS 编程中一个对象适配器的实现需要借助于协议(protocol)。客户想要与接口不兼容的类进行消息传递，可以先定义一个协议(protocol)，使适配器类(Adapter)遵从协议，实现一个或多个协议中的方法，这样客户就可以使用协议中的接口，通过适配器类向其中引用的不兼容类(Adaptee)转发消息。协议(protocol)常用于iOS 开发中的委托(delegate)模式。 Block 同样可以实现适配器模式，用 Block 替代协议进行信息的传递。         </p>
+<h4 id="效果">效果</h4><ul>
+<li>使用一个可复用的类，该类与其他不相关或不可预见的类协同工作。</li>
+<li>适配的目标(Target)与被适配者(Adaptee)接口越不相似，需要适配器做的工作越多。</li>
+<li><p>继承两个目标(Target)可以实现双向适配器，提供透明操作。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/07/design-pattern2/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/11/02/desing-pattern1/">
+                iOS 开发常见设计模式解析 | 创建型模式
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-11-02
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="单例模式">单例模式</h3><h4 id="定义">定义</h4><p>保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
+<h4 id="类图">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/singleton.png" alt="单例"><br>单例类(Singleton)定义一个实例化类操作，允许客户通过该操作访问唯一实例。</p>
+<h4 id="实践">实践</h4><p>Cocoa 框架中，UIApplication / UIAccelerometer / NSFileManager 等类均实现为单例类。通过 GCD 多线程框架可以方便的创建一个单例：</p>
+<pre><code>+ (instancetype)sharedinstance {
+    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> oncetoken；
+    <span class="keyword">static</span> SingletonClass *sharedinstance；
+    <span class="built_in">dispatch_once</span>(&amp;oncetoken, ^{
+        <span class="keyword">if</span> (!sharedinstance){
+            sharedinstance = [[SingletonClass alloc] init];
+        }
+    });
+    <span class="keyword">return</span> sharedinstance;
+}
+</code></pre>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/02/desing-pattern1/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/10/09/blockimpl/">
+                Block 底层探秘
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-10-09
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="Block底层实现">Block底层实现</h3><p>运用<code>clang -rewrite-objc</code>命令可以把 Objective-C 代码转换为 C/C++ 代码，从而展示 Block 的底层实现。以下是一个最普通的 Block 代码示例：    </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">void</span> (^blk)(<span class="keyword">void</span>) = ^&#123;<span class="built_in">printf</span>(<span class="string">"Block\n"</span>);&#125;;</span><br><span class="line">    blk();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过<code>clang -rewrite-objc</code>的转换，可以得到 Block 结构体的声明：    </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __block_impl &#123;</span><br><span class="line">    <span class="keyword">void</span> *isa;</span><br><span class="line">    <span class="keyword">int</span> Flags;</span><br><span class="line">    <span class="keyword">int</span> Reserved;</span><br><span class="line">    <span class="keyword">void</span> *FuncPtr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/09/blockimpl/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/"> #C </a>
+          
+            <a href="/tags/Objective-C/"> #Objective-C </a>
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/09/22/openear/">
+                OpenEar 语音识别框架使用指南
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-09-22
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>OpenEar 是基于 CMU PocketSphinx 的开源语音库，提供了丰富的语音合成、语音识别相关的功能，用 Cocoa 风格重新封装了 PocketSphinx 的接口，方便 iOS 开发者快速在 PocketSphinx 基础上进行语音方面的研究和开发。</p>
+<h3 id="文件格式">文件格式</h3><h4 id="声学模型(Acoustic_Model)：">声学模型(Acoustic Model)：</h4><p>可以从 CMU 官网可以下载到训练好的声学模型。 </p>
+<ul>
+<li>g2p: 提供字母到音素的转换，利用规则对字母生成发音，用来生成发音字典。</li>
+<li>feat.params: 特征提取中所使用的参数列表。</li>
+<li>mdef: 对 Tri-Phone 进行聚类形成 senone, 该文件定义了 Tri-Phone 到 senones 的映射定义。</li>
+<li>means: 保存高斯 codebook 均值的文件。</li>
+<li>variances: 保存高斯 codebook 方差的文件。</li>
+<li>sendump: 高斯混合模型的压缩文件。</li>
+<li>transition_matrices: HMM 转移矩阵。</li>
+<li>noisedict: 噪声过滤字典。其中还包括标示一段语音开始和结束的语音信息。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/22/openear/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/07/03/nonjbtweak/">
+                iOS 非越狱环境应用插件开发流程
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-07-03
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="工具">工具</h3><ul>
+<li>class-dump (获取已脱壳应用的头文件)</li>
+<li>ida (反汇编得到方法的具体实现)</li>
+<li>Cycript (动态调试获得更多信息)</li>
+<li>CaptainHook (替换已有方法的实现)</li>
+<li>yololib (在可执行文件中注入动态库)</li>
+<li>iOSOpenDev (在 XCode 中生成动态库)</li>
+</ul>
+<h3 id="定位目标函数">定位目标函数</h3><p>在掌握上文所述工具后，就可以着手进行插件的开发。首先应该思考插件要实现的需求，找到相关的视图和控制器。第一步可以先使用 class-dump 分析已砸壳的 APP，class-dump 可以根据 Mach-O 文件中的符号表( symbol table )分析出所有的类名和方法声明。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~ » ./class-dump -H -o /header/path WeChat</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/03/nonjbtweak/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/03/08/wkwebview/">
+                WKWebView 兼容 iOS7 实践
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-03-08
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="iOS8_新特性_WKWebView">iOS8 新特性 WKWebView</h3><p>WKWebView 相对于 UIWebView 有以下几点显著的提升：</p>
+<ol>
+<li>使用 Nitro JavaScript 引擎，加载处理 JS 代码的速度明显提升四倍左右。</li>
+<li>对 Web APP 加载的速度提升百分之20左右。</li>
+<li>优化了 WebView 的内存使用。</li>
+<li>开放了更多的 API.</li>
+</ol>
+<p>这已经足以让我们考虑在支持 iOS8 设备的应用中使用 WKWebView.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/08/wkwebview/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/02/15/uiappearance/">
+                UIAppearance 详解(译)
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-02-15
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>声明：本文译自《NSHipster》     </p>
+<p>风格 vs. 实质，信息 vs. 媒介，言辞 vs. 逻辑。<br>美丽仅是肤浅的表面，还是更深层的事实？某个事物有好的设计意味着什么？审美的判断是绝对的，还是因人而异的？<br>这些是哲学家、艺术家、创作者千年来反复思索的深刻问题。<br>当我们都继续着对宇宙中美和真理的追求，APP 销售市场清晰印证了以下的话：<br><strong>用户会为好看的软件付出更多的钱。</strong>   </p>
+<p>当一个人买下一台 iPhone，他其实买的是苹果公司的哲学：好用的东西同时可以很好看。当我们选择为 iOS 平台开发应用时，我们也是抱着同样的信念。一套稀烂的 UI 反映了其下糟糕的代码。<br>曾经在 iOS 平台上，使用像方法调剂(Method Swizzling)这样的技术来实现 UI 个性化，绕过 AppStore 的上架审核。幸运的是，随着 iOS 5 的改变，开发者有更简单的方法来实现：<code>UIAppearance</code>.<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/02/15/uiappearance/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/01/30/webview/">
+                Objective-C 和 JavaScript 双向交互详解
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-01-30
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <p>本文分两部分，分别讲解使用 UIWebView 和 iOS8 引入的 WKWebView 进行 Web &lt;==&gt; Native 双向交互的方式。</p>
+<h3 id="UIWebView">UIWebView</h3><h4 id="Objective-C_调用_JavaScript_方法">Objective-C 调用 JavaScript 方法</h4><p>UIWebView 的 API <code>stringByEvaluatingJavaScriptFromString:</code>是在 WebView 中运行 JS 代码的实例方法。在 Web 端用 JS 提供具体的方法实现，在 native 端就可以方便的调用。<br>JS 文件中:</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myJavascriptFunction</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">// 实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OC 文件中:</p>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="collection">[webview stringByEvaluatingJavaScriptFromString: @“myJavascriptFunction<span class="list">()</span>”]</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/30/webview/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/"> #JavaScript </a>
+          
+            <a href="/tags/Objective-C/"> #Objective-C </a>
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2016/01/23/appskin/">
+                搭建 APP 内皮肤切换框架
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-01-23
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="开源方案">开源方案</h3><p><a href="https://github.com/rnystrom/RNThemeManager">RNThemeManager</a> 提供了一种优雅的方案。这种方案将主题的配色或字体配置保存在静态 Plist 中，每次切换主题时，用单例 manager 类从 Plist 配置文件中读取样式信息。然后创建了一套可更换皮肤主题的父视图控件，控件初始化时(init)在通知中心注册为观察者，监听主题切换的通知，在接到通知时，将颜色和字体更改为指定的样式。这个更换皮肤的框架非常简洁，但在成熟项目中应用，需要把已有页面中的控件都继承自那套统一的可更换皮肤的父控件，或者把自定义的 view 注册到通知中心并自己实现变化皮肤的方法，代码改动较大，如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义的 ViewController 或 View 遵从 RNThemeUpdateProtocol 并实现 applyTheme 方法</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MYViewController</span> : <span class="title">UIViewController</span></span></span><br><span class="line">&lt;RNThemeUpdateProtocol&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 -viewDidLoad 中注册到通知中心</span></span><br><span class="line">[[<span class="built_in">NSNotificationCenter</span> defaultCenter] addObserver:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(applyTheme) withObject:<span class="literal">nil</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 -viewWillAppear (或 layout 视图的方法中)</span></span><br><span class="line">[<span class="keyword">self</span> applyTheme];</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)applyTheme &#123;</span><br><span class="line">    <span class="keyword">self</span><span class="variable">.view</span><span class="variable">.backgroundColor</span> = [[RNThemeManager sharedManager] colorForKey:<span class="string">@"backgroundColor"</span>];</span><br><span class="line">    <span class="keyword">self</span><span class="variable">.textField</span><span class="variable">.font</span> = [[RNThemeManager sharedManager] fontForKey:<span class="string">@"textFieldFont"</span>];</span><br><span class="line">    <span class="keyword">self</span><span class="variable">.textField</span><span class="variable">.layer</span><span class="variable">.cornerRadius</span> = [RNThemeManager sharedManager]<span class="variable">.styles</span>[<span class="string">@"cornerRadius"</span>]<span class="variable">.floatValue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/23/appskin/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+      
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              <a class="post-title-link" href="/2015/12/26/gerrit-password/">
+                PHP 实现 Gerrit 用户密码修改
+              </a>
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2015-12-26
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <h3 id="需求描述">需求描述</h3><p>在 Gerrit 的使用中，发现 Google 在这个框架中没有提供用户自助修改密码的功能，和 SVN 的情况相似，需要添加一个修改密码的页面。公司的 Gerrit 平台使用 HTTP Basic Authentication 方式来进行用户登录认证，由 htpasswd 命令生成的密码集中保存在一个默认的文件中。那么该页面的需求就可以细化为：对用户输入合法性做基本判断，从指定路径读取密码文件，用系统命令 htpasswd 修改密码。本文选择用 PHP 语言来实现该页面需求。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/12/26/gerrit-password/#more">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/"> #PHP </a>
+          
+        </div>
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </div>
+  </div>
+
+
+    
+  </div>
+
+  
+  <div class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
+  </div>
+
+
+        </div>
+
+        
+      </div>
+
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg" alt="BingXin Xue" />
+          <p class="site-author-name">BingXin Xue</p>
+        </div>
+        <p class="site-description motion-element">薛冰心的博客</p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+              <a href="https://github.com/EdwardBX" target="_blank">github</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://weibo.com/u/5106446763" target="_blank">weibo</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.douban.com/people/127211499/" target="_blank">douban</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.zhihu.com/people/xbx2014" target="_blank">zhihu</a>
+            </span>
+            
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp;  2014 - 
+  2016
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">BingXin Xue</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+  
+</body>
+</html>

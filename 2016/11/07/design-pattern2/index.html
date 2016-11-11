@@ -1,0 +1,957 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+    <meta name="description" content="薛冰心的博客" />
+
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.2" />
+
+
+
+
+  <title> iOS 开发常见设计模式解析 | 结构型模式 // 心辰·Dev </title>
+</head>
+
+<body>
+<!--[if lte IE 8]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari." style='margin-left:auto;margin-right:auto;display: block;'/></a></div> <![endif]-->
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">心辰·Dev</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-tags">
+        <a href="/tags">
+          <i class="menu-item-icon icon-tags"></i> <br />
+          标签
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              iOS 开发常见设计模式解析 | 结构型模式
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2016-11-07
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <h3 id="适配器">适配器</h3><h4 id="定义">定义</h4><p>将一个类的接口转换成客户希望的另外一个接口。适配器模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
+<h4 id="类图">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/对象适配器.png" alt="适配器"><br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/类适配器.png" alt="类适配器"><br>目标(Target)定义了客户可以使用的与特定领域相关的接口。被适配者(Adaptee)定义着已经存在的待适配的接口，适配器(Adapter)对被适配者的接口和目标接口进行适配。适配器使用多重继承进行适配的是类适配器，而依赖于对象组合进行适配的是对象适配器。</p>
+<h4 id="实践">实践</h4><p>Objc 语言本身不支持多重继承，但它支持灵活地定义协议(protocol)，类似于 Java 语言中的接口(interface)，使得一系列方法声明可以独立于类继承之外，通过遵从协议同样可以形成多重继承，实现对象适配器。虽然不符合适配器模式的结构描述，但其思想仍然是使原本接口不匹配的类可以协同工作。<br>在 iOS 编程中一个对象适配器的实现需要借助于协议(protocol)。客户想要与接口不兼容的类进行消息传递，可以先定义一个协议(protocol)，使适配器类(Adapter)遵从协议，实现一个或多个协议中的方法，这样客户就可以使用协议中的接口，通过适配器类向其中引用的不兼容类(Adaptee)转发消息。协议(protocol)常用于iOS 开发中的委托(delegate)模式。 Block 同样可以实现适配器模式，用 Block 替代协议进行信息的传递。         </p>
+<h4 id="效果">效果</h4><ul>
+<li>使用一个可复用的类，该类与其他不相关或不可预见的类协同工作。</li>
+<li>适配的目标(Target)与被适配者(Adaptee)接口越不相似，需要适配器做的工作越多。</li>
+<li><p>继承两个目标(Target)可以实现双向适配器，提供透明操作。</p>
+<a id="more"></a>
+<h3 id="桥接">桥接</h3><h4 id="定义-1">定义</h4><p>将抽象部分与它的实现部分分离，使它们都可以独立地变化。</p>
+<h4 id="类图-1">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/桥接.png" alt="桥接"><br>将抽象和它的实现部分分别放在独立的类层次结构中。抽象接口(Abstraction)维护一个指向实现对象(Implementor)的指针。实现类(Implementor)接口提供基本操作，而抽象(Abstraction)定义更高层次的操作。</p>
+<h4 id="实践-1">实践</h4><p>iOS 开发中常用的类大多数是底层类的抽象层，它们直接使用 Core Foundation 及其相关框架中暴露的 C API 来完成更高层次的操作，底层具体复杂的实现对 iOS 开发者大多数情况下是透明的。<br>在使用第三方框架时，不同框架对相同功能的实现可能有所不同，如果对框架的接口直接使用，后期想切换至另一套类似的框架，将造成业务代码多处改动。如果在三方库之上再抽象一层，即抽象出一套固定的接口(Abstraction)，在抽象层引用实现类并使用实现类的 API, 当要切换至另一套类似框架时，只需更改抽象层的实现，而不用改动上层业务代码。如以下接口实现了对 AFNetworking 框架 HTTP 请求功能的抽象：</p>
+<ul>
+<li><p>(NSURLSessionDataTask <em>)dataTaskWithHTTPMethod:(NSString </em>)method</p>
+<pre><code>        <span class="tag">requestSerializer</span>:(AFHTTPRequestSerializer *)<span class="tag">requestSerializer</span>
+                <span class="tag">URLString</span>:(NSString *)<span class="tag">URLString</span>
+               <span class="tag">parameters</span>:(id)<span class="tag">parameters</span>
+<span class="tag">constructingBodyWithBlock</span>:(nullable void (^)(id &lt;AFMultipartFormData&gt; formData))<span class="tag">block</span>
+                    <span class="tag">error</span>:(NSError * _Nullable __autoreleasing *)<span class="tag">error</span> {
+</code></pre><p>  NSMutableURLRequest *request = nil;</p>
+<p>  if (block) {</p>
+<pre><code>request = [requestSerializer multipartFormRequestWithMethod:<span class="function"><span class="keyword">method</span> <span class="title">URLString</span>:</span>URLString parameters:parameters constructingBodyWithBlock:<span class="keyword">block</span> error:error];
+</code></pre><p>  } else {</p>
+<pre><code>request = [requestSerializer requestWithMethod:<span class="function"><span class="keyword">method</span> <span class="title">URLString</span>:</span>URLString parameters:parameters error:error];
+</code></pre><p>  }</p>
+<p>  __block NSURLSessionDataTask *dataTask = nil;<br>  dataTask = [_manager dataTaskWithRequest:request</p>
+<pre><code>           <span class="tag">completionHandler</span>:^(NSURLResponse * __unused response, id responseObject, NSError *_error) {
+            <span class="attr_selector">[self handleRequestResult:dataTask responseObject:responseObject error:_error]</span>;
+}];
+</code></pre><p>  return dataTask;<br>}</p>
+<h4 id="效果-1">效果</h4></li>
+</ul>
+</li>
+<li>抽象和实现没有固定的绑定关系，运行时实现部分可被切换。</li>
+<li>对一个抽象的实现部分的修改不对客户产生影响。</li>
+<li>在多个对象间共享实现，同时实现细节对客户透明。</li>
+</ul>
+<h3 id="组合">组合</h3><h4 id="定义-2">定义</h4><p>将对象组合成树形结构以表示“部分-整体”的层次结构。使得用户对单个对象和组合对象的使用具有一致性。</p>
+<h4 id="类图-2">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/组合.png" alt="组合"><br>组合体(Component)为组合中的对象声明接口，为子组件声明尽可能多的公共操作，并声明接口用于访问子组件。可分解体(Composite)表示有子组件的组件，定义自己的行为并存储子组件，实现与子组件有关的操作，叶子体(Leaf)表示在组合中没有子节点的对象。</p>
+<h4 id="实践-2">实践</h4><p>组合模式会形成多个类的树形结构，树最顶端的节点(类)对外暴露接口，其下的子节点，即组合体内的类的实现是对外隐藏的。以 Cocoa Touch 框架中的 UITableViewCell 举例，一个 Cell 并不是最基本的视图单元，Cell 中包含了多个 UILabel / UIImageView / UIView 视图，基于 UITableViewCell 的开发者不需要知道这些视图如何在内部进行组合，只需要直接使用 UITableViewCell 的接口，并且可以通过 textLabel / contentView / backgroundView 等属性访问子组件。更一般的，iOS APP 的视图一般都有这样的视图体系层次(View Hierarchy): UIWindow —> UIView —> UIImageView…，如下图所示：<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/viewH.png" alt="view h"><br>借鉴系统框架的思想，进行 iOS 视图层开发时，经常使用视图的组合，创建可复用的视图组件。组件内部使用多个基本系统视图以形成聚合体，来实现更复杂的功能，对外只暴露最上层组件的接口。</p>
+<h4 id="效果-2">效果</h4><ul>
+<li>用户统一使用组合结构中的对象。</li>
+<li>更容易地添加新类型的组件，使设计更一般化。</li>
+</ul>
+<h3 id="装饰">装饰</h3><h4 id="定义-3">定义</h4><p>动态地给一个对象添加一些额外的职责，装饰模式比生成子类更为灵活。</p>
+<h4 id="类图-3">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/装饰.png" alt="装饰"><br>组件(Component)定义一个对象接口，具体组件(ConcreteComponent)定义了一个对象，可以给这个对象添加一些职责。装饰者(Decorator)维持指向组件对象的指针，并定义一个与组件接口一致的接口，具体装饰者(ConcreteDecorator)重载父类的接口并向内嵌的组件转发请求，并在转发请求前后执行一些附加动作。</p>
+<h4 id="实践-3">实践</h4><p>Objc 本身支持为类添加扩展(Category)，而不会对原有类本身造成不好的影响。Category 中的方法成为了类的一部分，可以被其子类继承。这些额外的方法是动态添加的，不同于匿名扩展(Extension)在编译期绑定，所以要谨慎防止添加的方法和原有方法产生命名冲突，否则扩展中的方法存在于方法列表中更靠前的位置，在原有类查找方法列表时优先被发现，进而会覆盖掉原有方法的实现。在类拓展中运用方法调剂可以在不改变组件(Component)接口的前提下，实现动态添加职责的效果，如下代码所示：  </p>
+<pre><code>+ (void)load {
+    SEL originalSelector = @selector(original_Method);
+    SEL swizzledSelector = @selector(swizzled_Method);
+    [self swizzleInstanceMethod:[MyObj <span class="class"><span class="keyword">class</span>] <span class="title">originSelector</span>:<span class="typename">originalSelector otherSelector:swizzledSelector];</span></span>
+}
+
+- (void)swizzled_Method {
+    <span class="comment">// do stuff</span>
+    [self original_Method];
+    <span class="comment">// do stuff</span>
+}
+
++ (void)swizzleInstanceMethod:(Class)<span class="class"><span class="keyword">class</span> <span class="title">originSelector</span>:<span class="typename"></span></span>(SEL)originSelector otherSelector:(SEL)otherSelector {
+    Method otherMehtod = class_getInstanceMethod(<span class="class"><span class="keyword">class</span>, <span class="typename">otherSelector);</span></span>
+    Method originMehtod = class_getInstanceMethod(<span class="class"><span class="keyword">class</span>, <span class="typename">originSelector);</span></span>
+
+    BOOL didAddMethod = class_addMethod(<span class="class"><span class="keyword">class</span>,
+                                        <span class="typename">originSelector</span>,
+                                        <span class="typename">method_getImplementation</span></span>(otherMehtod),
+                                        method_getTypeEncoding(otherMehtod));
+    <span class="keyword">if</span> (didAddMethod) {
+        class_replaceMethod(<span class="class"><span class="keyword">class</span>,
+                            <span class="typename">otherSelector</span>,
+                            <span class="typename">method_getImplementation</span></span>(originMehtod),
+                            method_getTypeEncoding(originMehtod));
+    }
+    <span class="keyword">else</span> {
+        <span class="comment">// 交换2个方法的实现</span>
+        method_exchangeImplementations(otherMehtod, originMehtod);
+    }
+}
+</code></pre><h4 id="效果-3">效果</h4><ul>
+<li>提供了更加灵活地向对象添加职责的方式。</li>
+<li>保持了组件(Component)类的简单性，避免了赋予组件类太多的功能。</li>
+</ul>
+<h3 id="外观">外观</h3><h4 id="定义-4">定义</h4><p>为子系统的一组接口提供一个一致的界面，外观(Facade)模式定义了一个高层接口，这个接口使得这一子系统更容易使用。</p>
+<h4 id="类图-4">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/外观.png" alt="外观"><br>外观(Facade)负责转发消息给子系统(Subsystem classes)，子系统实现功能，处理外观(Facade)指派的任务。</p>
+<h4 id="实践-4">实践</h4><p>三方开源库 SDWebImage 用一句代码封装了下载图片的操作，如下：    </p>
+<pre><code><span class="collection">[imageView sd_setImageWithURL:<span class="collection">[NSURL URLWithString:@<span class="string">"http://www.domain.com/path/to/image.jpg"</span>]</span>
+             placeholderImage:<span class="collection">[UIImage imageNamed:@<span class="string">"placeholder.png"</span>]</span>]</span><span class="comment">;</span>
+</code></pre><p>这个对用户来说极为简单的 API 封装了其内部子系统的协同行为。在这次调用中，内部包括 UIImageView(WebCache) / UIView(WebCache) / SDWebImageManager / SDImageCache / SDWebImageDownloader 在内的类参与了整个下载过程，而这些类中复杂的操作都不需要客户去处理。其具体时序图如下图所示：<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/SDWebImage.png" alt="SDWebImage"></p>
+<h4 id="效果-4">效果</h4><ul>
+<li>为复杂的子系统提供了一个简单的接口，减少了客户要处理的对象数目。</li>
+<li>实现子系统与客户及其他子系统的松耦合，提高子系统独立性和可移植性。</li>
+<li>子系统之间仅通过外观模块通讯，简化它们的依赖关系。</li>
+</ul>
+<h3 id="享元">享元</h3><h4 id="定义-5">定义</h4><p>运用共享技术有效地支持大量细粒度的对象。</p>
+<h4 id="类图-5">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/享元.png" alt="享元"><br>享元(Flyweight)描述一个接口，通过这个接口享元可以接受并作用于外部状态。具体享元(ConcreteFlyweight)实现了享元接口，并为内部状态增加存储空间，具体享元必须是可共享的。非共享享元(UnsharedConcreteFlyweight)在对象结构层次中将具体享元作为子节点。享元工厂(FlyweightFactory)创建并管理享元，确保合理地共享享元。当用户请求享元时，享元工厂对象可以提供一个已存在实例或重新创建一个实例。</p>
+<h4 id="实践-5">实践</h4><p>iOS 开发中最常用到的表格控件 UITableView 实现了一套内存共享机制，即每个不同类型的表格单元 UITableViewCell 都维持一个特殊的标识符，作为一个享元加入到重用队列，当表格单元需要被创建时，先到队列中查找可共享重用的 UITableViewCell 享元，如果存在则出队取得这个 Cell 单元，并调用 UITableViewCell 本身的方法<code>prepareForReuse</code>做重用准备；如果不存在可用的Cell 单元，则再根据之前注册的类或 Xib 进行新对象的创建。UITableView 的<code>dequeueReusableCellWithIdentifier:</code>方法可方便地对享元进行创建和管理。</p>
+<h4 id="效果-5">效果</h4><ul>
+<li>节省存储空间，实例总数减少，用计算时间换取对外部状态的存储。</li>
+<li>享元工厂帮助用户查找某个特定的享元对象，可引入某种形式的引用计数或垃圾回收机制。</li>
+</ul>
+<h3 id="代理">代理</h3><h4 id="定义-6">定义</h4><p>为其他对象提供一种代理以控制对这个对象的访问。</p>
+<h4 id="类图-6">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/代理.png" alt="代理"><br>代理(Proxy)保存一个引用使得代理可以访问实体(RealSubject)，提供一个与实体接口相同的接口，这样代理(Proxy)可以用来替代实体，控制对实体的存取和创建。抽象体(Subject)定义实体(RealSubject)和代理(Proxy)的共用接口。</p>
+<h4 id="实践-6">实践</h4><p>NSProxy 类是平行于 NSObject 类的又一大基类，它遵从了<code>&lt;NSObject&gt;</code>协议，大体上可以当做 NSObject 类来使用。它能够转发消息到它代理的对象，并且可以改变自身或加载被代理的对象来响应消息。通常使用 NSProxy 类只需要实现两个方法：   </p>
+<pre><code><span class="tag">-</span> (<span class="tag">void</span>)<span class="rule"><span class="attribute">forwardInvocation</span>:<span class="value">(NSInvocation *)invocation</span></span>;
+<span class="tag">-</span> (<span class="tag">nullable</span> <span class="tag">NSMethodSignature</span> *)<span class="rule"><span class="attribute">methodSignatureForSelector</span>:<span class="value">(SEL)sel</span></span>;
+</code></pre><p>iOS 开发中用代理模式解决了重型资源的加载问题。使用重型资源的代理类替代真正的资源，并且在需要时负责实例化这个资源对象。</p>
+<h4 id="效果-6">效果</h4><ul>
+<li>在访问对象时，引入了一定程度的间接性。</li>
+<li>实现了 copy-on-write 的优化方式。</li>
+</ul>
+
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/02/desing-pattern1/">iOS 开发常见设计模式解析 | 创建型模式</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+
+        
+      </div>
+
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg" alt="BingXin Xue" />
+          <p class="site-author-name">BingXin Xue</p>
+        </div>
+        <p class="site-description motion-element">薛冰心的博客</p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+              <a href="https://github.com/EdwardBX" target="_blank">github</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://weibo.com/u/5106446763" target="_blank">weibo</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.douban.com/people/127211499/" target="_blank">douban</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.zhihu.com/people/xbx2014" target="_blank">zhihu</a>
+            </span>
+            
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#适配器"><span class="nav-number">1.</span> <span class="nav-text">适配器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类图"><span class="nav-number">1.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实践"><span class="nav-number">1.3.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果"><span class="nav-number">1.4.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桥接"><span class="nav-number">2.</span> <span class="nav-text">桥接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-1"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类图-1"><span class="nav-number">2.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实践-1"><span class="nav-number">2.3.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果-1"><span class="nav-number">2.4.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合"><span class="nav-number">3.</span> <span class="nav-text">组合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-2"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类图-2"><span class="nav-number">3.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实践-2"><span class="nav-number">3.3.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果-2"><span class="nav-number">3.4.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#装饰"><span class="nav-number">4.</span> <span class="nav-text">装饰</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-3"><span class="nav-number">4.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类图-3"><span class="nav-number">4.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实践-3"><span class="nav-number">4.3.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果-3"><span class="nav-number">4.4.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外观"><span class="nav-number">5.</span> <span class="nav-text">外观</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-4"><span class="nav-number">5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类图-4"><span class="nav-number">5.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实践-4"><span class="nav-number">5.3.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果-4"><span class="nav-number">5.4.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#享元"><span class="nav-number">6.</span> <span class="nav-text">享元</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-5"><span class="nav-number">6.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类图-5"><span class="nav-number">6.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实践-5"><span class="nav-number">6.3.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果-5"><span class="nav-number">6.4.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理"><span class="nav-number">7.</span> <span class="nav-text">代理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义-6"><span class="nav-number">7.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类图-6"><span class="nav-number">7.2.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实践-6"><span class="nav-number">7.3.</span> <span class="nav-text">实践</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果-6"><span class="nav-number">7.4.</span> <span class="nav-text">效果</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp;  2014 - 
+  2016
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">BingXin Xue</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+  
+</body>
+</html>

@@ -1,0 +1,964 @@
+<!doctype html>
+<html class="theme-next use-motion ">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
+
+
+    <meta name="description" content="薛冰心的博客" />
+
+
+
+  <meta name="keywords" content="Objective-C,iOS," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.2" />
+
+
+
+
+  <title> NSHipster 博客干货整理 | Cocoa 框架 // 心辰·Dev </title>
+</head>
+
+<body>
+<!--[if lte IE 8]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari." style='margin-left:auto;margin-right:auto;display: block;'/></a></div> <![endif]-->
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <div id="header" class="header">
+      <div class="header-inner">
+        <h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">心辰·Dev</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+
+  <ul id="menu" class="menu">
+     
+    
+      
+      <li class="menu-item menu-item-home">
+        <a href="/">
+          <i class="menu-item-icon icon-home"></i> <br />
+          首页
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-about">
+        <a href="/about">
+          <i class="menu-item-icon icon-about"></i> <br />
+          关于
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-archives">
+        <a href="/archives">
+          <i class="menu-item-icon icon-archives"></i> <br />
+          归档
+        </a>
+      </li>
+    
+      
+      <li class="menu-item menu-item-tags">
+        <a href="/tags">
+          <i class="menu-item-icon icon-tags"></i> <br />
+          标签
+        </a>
+      </li>
+    
+  </ul>
+
+
+      </div>
+    </div>
+
+    <div id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  <div class="post post-type-normal ">
+    <div class="post-header">
+
+      
+      
+        <h1 class="post-title">
+          
+          
+            
+              NSHipster 博客干货整理 | Cocoa 框架
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于 2015-08-14
+        </span>
+
+        
+
+        
+          
+        
+      </div>
+    </div>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <h3 id="KVC_集合操作符">KVC 集合操作符</h3><ul>
+<li>@count: (NSNumber)集合中对象总数</li>
+<li>@sum: (NSNumber)集合中数值总和</li>
+<li>@avg: (NSNumber)集合中平均数</li>
+<li>@max: 最大值</li>
+<li><p>@min: 最小值     </p>
+  <figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="collection">[products valueForKeyPath: @<span class="string">"@count"</span>]</span><span class="comment">;</span></span><br><span class="line"><span class="collection">[products valueForKeyPath: @<span class="string">"@sum.price"</span>]</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@unionOfObjects / @distinctUnionOfObjects: 返回 key path 对应的对象数组，不去重。<code>@distinctUnionOfObjects</code>去重。   </p>
+  <figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="collection">[inventory valueForKeyPath: @<span class="string">"@unionOfObjects.name"</span>]</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="KVO">KVO</h3><ul>
+<li><p>添加观察者:</p>
+  <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- <span class="string">addObserver:</span><span class="string">forKeyPath:</span><span class="string">options:</span><span class="string">context:</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>context</code>的建议赋值方式是<code>static void *XXContext = &amp;XXContext;</code>，<code>keyPath</code>的建议值是<code>@selector(isFinished)</code>，添加反馈最佳实践如下：    </p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)observeValueForKeyPath:(NSString *)keyPath</span><br><span class="line">                      ofObject:(id)object</span><br><span class="line">                        change:(NSDictionary *)change</span><br><span class="line">                       context:(<span class="keyword">void</span> *)context &#123;</span><br><span class="line">    <span class="keyword">if</span> (context == XXContext) &#123;</span><br><span class="line">        <span class="keyword">if</span> ([keyPath isEqualToString: NSStringFromSelector(@selector(isFinished))]) &#123;</span><br><span class="line">            <span class="comment">// ... </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="NSError">NSError</h3><ul>
+<li>错误码(code)一般定义为枚举中的一个常量。</li>
+<li>用户信息(userInfo)字典中常用的键有:<ul>
+<li>localizedDescription</li>
+<li>localizedRecoverySuggestion </li>
+<li>localizedFailureReason</li>
+</ul>
+</li>
+</ul>
+<h4 id="NSError_的用法:">NSError 的用法:</h4><ul>
+<li><p>消费者:   </p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NSError *error = nil;</span><br><span class="line">BOOL success = [[NSFileManager defaultManager]</span><br><span class="line">    moveItemAtPath:@<span class="string">"/path/to/target"</span></span><br><span class="line">            toPath:@<span class="string">"/path/to/destination"</span></span><br><span class="line">             error:&amp;error];</span><br><span class="line"><span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    NSLog(@<span class="string">"%@"</span>, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  消除了 Objective-C 方法只有一个返回值的限制。        </p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[[session dataTaskWithRequest:request</span><br><span class="line">            completionHandler: ^(NSData *data, NSURLResponse *response, NSError *error) &#123;</span><br><span class="line">    <span class="keyword">if</span> (error) &#123;</span><br><span class="line">        NSLog(@<span class="string">"%@"</span>, error);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">        <span class="comment">// ... </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;] resume];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生产者:</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)validateObject:(id)object</span><br><span class="line">                error:(NSError * __autoreleasing *)outError &#123;</span><br><span class="line">       <span class="comment">// call another API, passing &amp;error into its (NSError **) parameter</span></span><br><span class="line">       NSError *error = nil;</span><br><span class="line">       BOOL success = ...; </span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">           <span class="keyword">if</span> (outError) &#123;</span><br><span class="line">               *outError = [NSError errorWithDomain:NSHipsterErrorDomain</span><br><span class="line">                                               code:-<span class="number">42</span></span><br><span class="line">                                           userInfo:@&#123;NSUnderlyingErrorKey: error&#125;];</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> success;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="NSOperation">NSOperation</h3><p>为了让一个 NSOperation 操作开始执行，你可以直接调用<code>-start</code>，或者将它添加到操作队列 NSOperationQueue 中，添加之后，它会在队列排到它以后自动执行。</p>
+<h4 id="NSOperation_的状态机">NSOperation 的状态机</h4><p>分为三种状态：isReady —&gt; isExecuting —&gt; isFinished。</p>
+<h4 id="NSOperation_的优先级">NSOperation 的优先级</h4><ul>
+<li>NSOperationQueuePriorityVeryHigh </li>
+<li>NSOperationQueuePriorityHigh</li>
+<li>NSOperationQueuePriorityNormal</li>
+<li>NSOperationQueuePriorityLow </li>
+<li>NSOperationQueuePriorityVeryLow </li>
+</ul>
+<h4 id="构建依赖关系">构建依赖关系</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[resizingOperation addDependency:networkingOperation];</span><br><span class="line">[operationQueue addOperation:networkingOperation];</span><br><span class="line">[operationQueue addOperation:resizingOperation];</span><br></pre></td></tr></table></figure>
+<p>只有<code>networkingOperation</code>状态<code>isFinished</code>为<code>YES</code>, <code>resizingOperation</code>操作才会开始。</p>
+<h3 id="NSSortDescriptor">NSSortDescriptor</h3><ul>
+<li>key: 对于一个给定的集合，要对每个集合对象进行排序的值的键。</li>
+<li>ascending: YES ascending 表示升序。</li>
+<li>localizedStandardCompare: 根据当前语言环境的规则进行排序。</li>
+</ul>
+<h3 id="NSExpression">NSExpression</h3><h4 id="算数表达式">算数表达式</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NSExpression *expression = [NSExpression expressionWithFormat:@<span class="string">"4 + 5 - 2**3"</span>];</span><br><span class="line">id value = [expression expressionValueWithObject:nil context:nil]; <span class="comment">// =&gt; 1</span></span><br></pre></td></tr></table></figure>
+<h4 id="利用函数">利用函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSArray *numbers = @[@<span class="number">1</span>, @<span class="number">2</span>, @<span class="number">3</span>, @<span class="number">4</span>, @<span class="number">4</span>, @<span class="number">5</span>, @<span class="number">9</span>, @<span class="number">11</span>];</span><br><span class="line">NSExpression *expression = [NSExpression expressionForFunction:@<span class="string">"stddev:"</span> arguments:@[[NSExpression expressionForConstantValue:numbers]]];</span><br><span class="line">id value = [expression expressionValueWithObject:nil context:nil]; <span class="comment">// =&gt; 3.21859...</span></span><br></pre></td></tr></table></figure>
+<p>支持自定义函数。</p>
+<h4 id="统计数字">统计数字</h4><ul>
+<li>average:</li>
+<li>sum:</li>
+<li>count:</li>
+<li>min:</li>
+<li>max:</li>
+<li>median:</li>
+<li>mode:</li>
+<li>stddev:</li>
+</ul>
+<h4 id="基本运算">基本运算</h4><ul>
+<li>add:to:</li>
+<li>from:subtract: </li>
+<li>multiply:by:</li>
+<li>divide:by:</li>
+<li>modulus:by:</li>
+<li>abs: </li>
+</ul>
+<h4 id="高级运算">高级运算</h4><ul>
+<li>sqrt:</li>
+<li>log:</li>
+<li>ln:</li>
+<li>raise:toPower:</li>
+<li>exp:</li>
+</ul>
+<h4 id="边界函数">边界函数</h4><ul>
+<li>ceiling: - (不小于数组中的值的最小整数值)</li>
+<li>trunc: - (最接近但不大于数组中的值的整数值)</li>
+</ul>
+<h3 id="NSPredicate">NSPredicate</h3><p>在不可变集合中应用过滤方法，如<code>filteredArrayUsingPredicate:</code>，那么会返回一个经过过滤的不可变集合。可变集合则直接移除不符合规则的对象。这一过程在内存中进行。<br>在<code>Core Data</code>中也能使用<code>NSPredicate</code>, 只是评估过程由持久化存储助理(persistent store coordinator)在管理对象上下文中(managed object context)进行。</p>
+<h4 id="NSCompoundPredicate">NSCompoundPredicate</h4><p><code>NSCompoundPredicate</code>用于合成现成的<code>NSPredicate</code>。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[NSCompoundPredicate andPredicateWithSubpredicates:@[[NSPredicate predicateWithFormat:@<span class="string">"age &gt; 25"</span>], [NSPredicate predicateWithFormat:@<span class="string">"firstName = %@"</span>, @<span class="string">"Quentin"</span>]]];</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[NSPredicate predicateWithFormat:@<span class="string">"(age &gt; 25) AND (firstName = %@)"</span>, @<span class="string">"Quentin"</span>];</span><br></pre></td></tr></table></figure>
+<p>以上两段代码功能相同。</p>
+<h4 id="Block_Predicates">Block Predicates</h4><p>用Block封装任意的运算。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NSPredicate *shortNamePredicate = [NSPredicate predicateWithBlock: ^BOOL(id evaluatedObject, NSDictionary *bindings) &#123;</span><br><span class="line">    <span class="keyword">return</span> [[evaluatedObject firstName] length] &lt;= <span class="number">5</span>;</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">NSLog(@<span class="string">"Short Names: %@"</span>, [people filteredArrayUsingPredicate: shortNamePredicate]);</span><br></pre></td></tr></table></figure></p>
+<h3 id="NSFileManager">NSFileManager</h3><p>通过<code>NSFileManager</code>的<code>attributesOfItemAtPath:error:</code>可以访问很多文件的属性，如下的代码得到文件的创建日期：   </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ([fileManager fileExistsAtPath:filePath]) &#123;</span><br><span class="line">    NSDictionary *attributes = [fileManager attributesOfItemAtPath:filePath error:nil];</span><br><span class="line">    creationDate = attributes[NSFileCreationDate];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果用一个代理接收关于文件移动、复制、删除等操作的通知，应该创建一个<code>NSFileManager</code>实例，将代理对象指向 fileManager 的代理。</p>
+<h3 id="NSValue">NSValue</h3><ul>
+<li><p>valueWithBytes:objCType:<br>创建并返回一个包含指定 Objective-C 类型数值的 NSValue 对象。</p>
+</li>
+<li><p>valueWithNonretainedObject:<br>创建并返回一个包含 Objective-C 对象的 NSValue 对象。这样允许一个对象，在不遵从 <code>&lt;NSCopying&gt;</code> 协议的情况下，添加到集合中。</p>
+</li>
+</ul>
+<h3 id="NSValueTransformer">NSValueTransformer</h3><p>使用 Matt 大神提供的三方库 TransformerKit, 用以下代码注册一个转换字符串首字母大写的<code>NSValueTransformer</code>：   </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NSString * <span class="keyword">const</span> TKCapitalizedStringTransformerName = @<span class="string">"TKCapitalizedStringTransformerName"</span>;</span><br><span class="line"></span><br><span class="line">[NSValueTransformer registerValueTransformerWithName:TKCapitalizedStringTransformerName</span><br><span class="line">                               transformedValueClass:[NSString <span class="keyword">class</span>]</span><br><span class="line">                  returningTransformedValueWithBlock:^id(id value) &#123;</span><br><span class="line">    <span class="keyword">return</span> [value capitalizedString];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h3 id="NS_ENUM_&amp;_NS_OPTIONS">NS_ENUM &amp; NS_OPTIONS</h3><p>简单定义<code>NS_ENUM</code>宏如下:    </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#ifndef NS_ENUM</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> NS_ENUM(_type, _name) enum _name : _type _name; enum _name : _type</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>enum 还可以用来定义位掩码。数字二进制的每一位可以看做一个布尔值，用<code>|</code>和<code>&amp;</code>进行组合运算。和 NS_ENUM 的语法相同，使用 NS_OPTIONS 宏定义位掩码。</p>
+<h3 id="NSCache">NSCache</h3><ul>
+<li>NSCache 实际上是可以自动清理内存空间的 NSMutableDictionary, 而且它的 keys 不用遵从 <code>&lt;NSCopying&gt;</code>。</li>
+<li>由于<code>cost</code>参数定义不明，尽量不要使用<code>setObject:forKey:cost:</code>。</li>
+</ul>
+<h3 id="NSHashTable_&amp;_NSMapTable">NSHashTable &amp; NSMapTable</h3><p>可以存储弱引用的值，或使用一个没有遵守<code>&lt;NSCopying&gt;</code>的对象作为键。<br><code>NSHashTable</code>对应<code>NSSet</code>，<code>NSMapTable</code>对应<code>NSDictionary</code>。<br>使<code>NSMapTable</code>支持对象下标索引，添加以下的 Category 即可：     </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@<span class="function">implementation <span class="title">NSMapTable</span> <span class="params">(NSHipsterSubscripting)</span></span><br><span class="line"></span><br><span class="line">- <span class="params">(id)</span>objectForKeyedSubscript:<span class="params">(id)</span>key </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> [self objectForKey:key];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setObject:(id)obj forKeyedSubscript:(id)key &#123;</span><br><span class="line">    <span class="keyword">if</span> (obj != nil) &#123;</span><br><span class="line">        [self setObject:obj forKey:key];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [self removeObjectForKey:key];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Objective-C/"> #Objective-C </a>
+          
+            <a href="/tags/iOS/"> #iOS </a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/14/8queen/">Scheme 编程实例 | 八皇后问题</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/10/nshipsterpart1/">NSHipster 博客干货整理 | OC 基础</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+    
+      <div class="comments" id="comments">
+        
+      </div>
+    
+  </div>
+
+
+        </div>
+
+        
+      </div>
+
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview">
+        <div class="site-author motion-element">
+          <img class="site-author-image" src="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg" alt="BingXin Xue" />
+          <p class="site-author-name">BingXin Xue</p>
+        </div>
+        <p class="site-description motion-element">薛冰心的博客</p>
+        <div class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </div>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+              <a href="https://github.com/EdwardBX" target="_blank">github</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://weibo.com/u/5106446763" target="_blank">weibo</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.douban.com/people/127211499/" target="_blank">douban</a>
+            </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://www.zhihu.com/people/xbx2014" target="_blank">zhihu</a>
+            </span>
+            
+          
+        </div>
+
+        
+        
+
+      </div>
+
+      
+        <div class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#KVC_集合操作符"><span class="nav-number">1.</span> <span class="nav-text">KVC 集合操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#KVO"><span class="nav-number">2.</span> <span class="nav-text">KVO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSError"><span class="nav-number">3.</span> <span class="nav-text">NSError</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSError_的用法:"><span class="nav-number">3.1.</span> <span class="nav-text">NSError 的用法:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSOperation"><span class="nav-number">4.</span> <span class="nav-text">NSOperation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSOperation_的状态机"><span class="nav-number">4.1.</span> <span class="nav-text">NSOperation 的状态机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSOperation_的优先级"><span class="nav-number">4.2.</span> <span class="nav-text">NSOperation 的优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构建依赖关系"><span class="nav-number">4.3.</span> <span class="nav-text">构建依赖关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSSortDescriptor"><span class="nav-number">5.</span> <span class="nav-text">NSSortDescriptor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSExpression"><span class="nav-number">6.</span> <span class="nav-text">NSExpression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#算数表达式"><span class="nav-number">6.1.</span> <span class="nav-text">算数表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利用函数"><span class="nav-number">6.2.</span> <span class="nav-text">利用函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#统计数字"><span class="nav-number">6.3.</span> <span class="nav-text">统计数字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本运算"><span class="nav-number">6.4.</span> <span class="nav-text">基本运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高级运算"><span class="nav-number">6.5.</span> <span class="nav-text">高级运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#边界函数"><span class="nav-number">6.6.</span> <span class="nav-text">边界函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSPredicate"><span class="nav-number">7.</span> <span class="nav-text">NSPredicate</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSCompoundPredicate"><span class="nav-number">7.1.</span> <span class="nav-text">NSCompoundPredicate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Block_Predicates"><span class="nav-number">7.2.</span> <span class="nav-text">Block Predicates</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSFileManager"><span class="nav-number">8.</span> <span class="nav-text">NSFileManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSValue"><span class="nav-number">9.</span> <span class="nav-text">NSValue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSValueTransformer"><span class="nav-number">10.</span> <span class="nav-text">NSValueTransformer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NS_ENUM_&_NS_OPTIONS"><span class="nav-number">11.</span> <span class="nav-text">NS_ENUM & NS_OPTIONS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSCache"><span class="nav-number">12.</span> <span class="nav-text">NSCache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSHashTable_&_NSMapTable"><span class="nav-number">13.</span> <span class="nav-text">NSHashTable & NSMapTable</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </div>
+      
+
+    </div>
+  </div>
+
+
+    </div>
+
+    <div id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; &nbsp;  2014 - 
+  2016
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  <span class="author">BingXin Xue</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT
+  </a>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.content img').each(function () {
+        var $image = $(this);
+        var $imageWrapLink = $image.parent('a');
+
+        if ($imageWrapLink.size() < 1) {
+          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
+        }
+        $imageWrapLink.addClass('fancybox');
+      });
+    });
+    $('.fancybox').fancybox({
+      helpers: {
+        overlay: {
+          locked: false
+        }
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+  function hasMobileUA () {
+    var nav = window.navigator;
+    var ua = nav.userAgent;
+    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
+
+    return pa.test(ua);
+  }
+
+  function isDesktop () {
+    return screen.width > 991 && !hasMobileUA();
+  }
+
+  function isTablet () {
+    return screen.width < 992 && screen.width > 767 && hasMobileUA();
+  }
+
+  function isMobile () {
+    return screen.width < 767 && hasMobileUA();
+  }
+
+  function escapeSelector (selector) {
+    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+  }
+</script>
+
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" id="motion.global">
+  $(document).ready(function () {
+    var body = $('body');
+    var isSidebarVisible = false;
+    var sidebarToggle = $('.sidebar-toggle');
+    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
+    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
+    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
+    var sidebar = $('.sidebar');
+
+    var SIDEBAR_WIDTH = '320px';
+    var SIDEBAR_DISPLAY_DURATION = 300;
+
+    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
+
+    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
+    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
+
+    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
+    var sidebarToogleLine2ndStatusClose = {opacity: 0};
+
+    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
+    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
+    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
+
+    LogoAndMenuMotion();
+    sidebatToggleMotion();
+    postsListMotion();
+    backToTopMotion();
+
+
+    $(document)
+      .on('sidebar.isShowing', function () {
+        isDesktop() && body.velocity(
+          {paddingRight: SIDEBAR_WIDTH},
+          SIDEBAR_DISPLAY_DURATION
+        );
+        sidebarContentMotion();
+      })
+      .on('sidebar.isHiding', function () {});
+
+    function LogoAndMenuMotion() {
+      $.Velocity.RunSequence([
+        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
+        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
+        
+        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
+      ]);
+      $('.menu-item').velocity('transition.slideDownIn', {display: null});
+    }
+
+
+    function backToTopMotion () {
+      var b2top = $('.back-to-top');
+      b2top.on('click', function () {
+        body.velocity('scroll');
+      });
+    }
+
+    function sidebarShowMotion () {
+
+      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
+      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
+      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
+
+      sidebar.velocity({width: SIDEBAR_WIDTH}, {
+        display: 'block',
+        duration: SIDEBAR_DISPLAY_DURATION,
+        complete: function () {
+          sidebar.addClass('sidebar-active');
+          sidebar.trigger('sidebar.didShow');
+        }
+      });
+      sidebar.trigger('sidebar.isShowing');
+    }
+
+    function sidebarHideMotion () {
+      isDesktop() && body.velocity({paddingRight: 0});
+      sidebar.velocity('reverse');
+
+      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
+      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
+      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
+
+      sidebar.removeClass('sidebar-active');
+      sidebar.trigger('sidebar.isHiding');
+    };
+
+    function sidebarContentMotion () {
+      $('.sidebar .motion-element').velocity(
+        'transition.slideRightIn',
+        {stagger: 50, drag: true}
+      );
+    }
+
+    function postsListMotion () {
+      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
+      $('.post').velocity('transition.slideDownIn', postMotionOptions);
+    }
+
+    function sidebatToggleMotion () {
+      sidebarToggle.on('click', function () {
+        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
+        isSidebarVisible = !isSidebarVisible;
+      });
+
+      sidebarToggle.hover(function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
+      }, function () {
+        if (isSidebarVisible) {return}
+        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
+        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
+        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
+      });
+    }
+  });
+
+</script>
+
+
+
+
+
+  
+  
+<script type="text/javascript" id="bootstrap.scrollspy.custom">
+  /* ========================================================================
+  * Bootstrap: scrollspy.js v3.3.2
+  * http://getbootstrap.com/javascript/#scrollspy
+  * ========================================================================
+  * Copyright 2011-2015 Twitter, Inc.
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+  * ======================================================================== */
+
+  /**
+   * Custom by iissnan
+   *
+   * - Add a `clear.bs.scrollspy` event.
+   * - Esacpe targets selector.
+   */
+
+
+  +function ($) {
+    'use strict';
+
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
+
+    function ScrollSpy(element, options) {
+      this.$body          = $(document.body)
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
+      this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
+      this.selector       = (this.options.target || '') + ' .nav li > a'
+      this.offsets        = []
+      this.targets        = []
+      this.activeTarget   = null
+      this.scrollHeight   = 0
+
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
+      this.refresh()
+      this.process()
+    }
+
+    ScrollSpy.VERSION  = '3.3.2'
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    }
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
+    }
+
+    ScrollSpy.prototype.refresh = function () {
+      var that          = this
+      var offsetMethod  = 'offset'
+      var offsetBase    = 0
+
+      this.offsets      = []
+      this.targets      = []
+      this.scrollHeight = this.getScrollHeight()
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position'
+        offsetBase   = this.$scrollElement.scrollTop()
+      }
+
+      this.$body
+        .find(this.selector)
+        .map(function () {
+          var $el   = $(this)
+          var href  = $el.data('target') || $el.attr('href')
+          var $href = /^#./.test(href) && $(escapeSelector(href)) // Need to escape selector.
+
+          return ($href
+            && $href.length
+            && $href.is(':visible')
+            && [[$href[offsetMethod]().top + offsetBase, href]]) || null
+        })
+        .sort(function (a, b) { return a[0] - b[0] })
+        .each(function () {
+          that.offsets.push(this[0])
+          that.targets.push(this[1])
+        })
+
+
+    }
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
+      var scrollHeight = this.getScrollHeight()
+      var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
+      var offsets      = this.offsets
+      var targets      = this.targets
+      var activeTarget = this.activeTarget
+      var i
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh()
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        $(this.selector).trigger('clear.bs.scrollspy')  // Add a custom event.
+        this.activeTarget = null
+        return this.clear()
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i]
+          && scrollTop >= offsets[i]
+          && (!offsets[i + 1] || scrollTop <= offsets[i + 1])
+          && this.activate(targets[i])
+      }
+    }
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target
+
+      this.clear()
+
+      var selector = this.selector +
+        '[data-target="' + target + '"],' +
+        this.selector + '[href="' + target + '"]'
+
+      var active = $(selector)
+        .parents('li')
+        .addClass('active')
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active
+          .closest('li.dropdown')
+          .addClass('active')
+      }
+
+      active.trigger('activate.bs.scrollspy')
+    }
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector)
+        .parentsUntil(this.options.target, '.active')
+        .removeClass('active')
+    }
+
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this   = $(this)
+        var data    = $this.data('bs.scrollspy')
+        var options = typeof option == 'object' && option
+
+        if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
+        if (typeof option == 'string') data[option]()
+      })
+    }
+
+    var old = $.fn.scrollspy
+
+    $.fn.scrollspy             = Plugin
+    $.fn.scrollspy.Constructor = ScrollSpy
+
+
+    // SCROLLSPY NO CONFLICT
+    // =====================
+
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old
+      return this
+    }
+
+
+    // SCROLLSPY DATA-API
+    // ==================
+
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this)
+        Plugin.call($spy, $spy.data())
+      })
+    })
+
+  }(jQuery);
+</script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var $sidebarInner = $('.sidebar-inner');
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.didShow', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+          var self = this;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      $(indicator).velocity('stop').velocity({
+        opacity: action === 'show' ? 0.4 : 0
+      }, { duration: 100 });
+    }
+
+  });
+</script>
+
+
+  <script type="text/javascript" id="sidebar.nav">
+    $(document).ready(function () {
+      var html = $('html');
+
+      $('.sidebar-nav li').on('click', function () {
+        var item = $(this);
+        var activeTabClassName = 'sidebar-nav-active';
+        var activePanelClassName = 'sidebar-panel-active';
+        if (item.hasClass(activeTabClassName)) {
+          return;
+        }
+
+        var currentTarget = $('.' + activePanelClassName);
+        var target = $('.' + item.data('target'));
+
+        currentTarget.velocity('transition.slideUpOut', 200, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', 200)
+            .addClass(activePanelClassName);
+        });
+
+        item.siblings().removeClass(activeTabClassName);
+        item.addClass(activeTabClassName);
+      });
+
+      $('.post-toc a').on('click', function (e) {
+        e.preventDefault();
+        var offset = $(escapeSelector(this.getAttribute('href'))).offset().top;
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        });
+      });
+
+      // Expand sidebar on post detail page by default, when post has a toc.
+      var $tocContent = $('.post-toc-content');
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0 && isDesktop()) {
+        setTimeout(function () {
+          $('.sidebar-toggle').trigger('click');
+        }, 800);
+      }
+    });
+  </script>
+
+
+
+
+  
+
+  
+  
+  
+
+  
+
+
+
+
+  
+  
+</body>
+</html>
