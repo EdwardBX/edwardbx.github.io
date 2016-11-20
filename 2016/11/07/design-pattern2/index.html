@@ -104,7 +104,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="适配器">适配器</h3><h4 id="定义">定义</h4><p>将一个类的接口转换成客户希望的另外一个接口。适配器模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。</p>
-<h4 id="类图">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/对象适配器.png" alt="适配器"><br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/类适配器.png" alt="类适配器"><br>目标(Target)定义了客户可以使用的与特定领域相关的接口。被适配者(Adaptee)定义着已经存在的待适配的接口，适配器(Adapter)对被适配者的接口和目标接口进行适配。适配器使用多重继承进行适配的是类适配器，而依赖于对象组合进行适配的是对象适配器。</p>
+<h4 id="类图">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/对象适配器.png" alt="对象适配器"><br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/类适配器.png" alt="类适配器"><br>目标(Target)定义了客户可以使用的与特定领域相关的接口。被适配者(Adaptee)定义着已经存在的待适配的接口，适配器(Adapter)对被适配者的接口和目标接口进行适配。适配器使用多重继承进行适配的是类适配器，而依赖于对象组合进行适配的是对象适配器。</p>
 <h4 id="实践">实践</h4><p>Objc 语言本身不支持多重继承，但它支持灵活地定义协议(protocol)，类似于 Java 语言中的接口(interface)，使得一系列方法声明可以独立于类继承之外，通过遵从协议同样可以形成多重继承，实现对象适配器。虽然不符合适配器模式的结构描述，但其思想仍然是使原本接口不匹配的类可以协同工作。<br>在 iOS 编程中一个对象适配器的实现需要借助于协议(protocol)。客户想要与接口不兼容的类进行消息传递，可以先定义一个协议(protocol)，使适配器类(Adapter)遵从协议，实现一个或多个协议中的方法，这样客户就可以使用协议中的接口，通过适配器类向其中引用的不兼容类(Adaptee)转发消息。协议(protocol)常用于iOS 开发中的委托(delegate)模式。 Block 同样可以实现适配器模式，用 Block 替代协议进行信息的传递。         </p>
 <h4 id="效果">效果</h4><ul>
 <li>使用一个可复用的类，该类与其他不相关或不可预见的类协同工作。</li>
@@ -144,7 +144,7 @@
 </ul>
 <h3 id="组合">组合</h3><h4 id="定义-2">定义</h4><p>将对象组合成树形结构以表示“部分-整体”的层次结构。使得用户对单个对象和组合对象的使用具有一致性。</p>
 <h4 id="类图-2">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/组合.png" alt="组合"><br>组合体(Component)为组合中的对象声明接口，为子组件声明尽可能多的公共操作，并声明接口用于访问子组件。可分解体(Composite)表示有子组件的组件，定义自己的行为并存储子组件，实现与子组件有关的操作，叶子体(Leaf)表示在组合中没有子节点的对象。</p>
-<h4 id="实践-2">实践</h4><p>组合模式会形成多个类的树形结构，树最顶端的节点(类)对外暴露接口，其下的子节点，即组合体内的类的实现是对外隐藏的。以 Cocoa Touch 框架中的 UITableViewCell 举例，一个 Cell 并不是最基本的视图单元，Cell 中包含了多个 UILabel / UIImageView / UIView 视图，基于 UITableViewCell 的开发者不需要知道这些视图如何在内部进行组合，只需要直接使用 UITableViewCell 的接口，并且可以通过 textLabel / contentView / backgroundView 等属性访问子组件。更一般的，iOS APP 的视图一般都有这样的视图体系层次(View Hierarchy): UIWindow —> UIView —> UIImageView…，如下图所示：<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/viewH.png" alt="view h"><br>借鉴系统框架的思想，进行 iOS 视图层开发时，经常使用视图的组合，创建可复用的视图组件。组件内部使用多个基本系统视图以形成聚合体，来实现更复杂的功能，对外只暴露最上层组件的接口。</p>
+<h4 id="实践-2">实践</h4><p>组合模式会形成多个类的树形结构，树最顶端的节点(类)对外暴露接口，其下的子节点，即组合体内的类的实现是对外隐藏的。以 Cocoa Touch 框架中的 UITableViewCell 举例，一个 Cell 并不是最基本的视图单元，Cell 中包含了多个 UILabel / UIImageView / UIView 视图，基于 UITableViewCell 的开发者不需要知道这些视图如何在内部进行组合，只需要直接使用 UITableViewCell 的接口，并且可以通过 textLabel / contentView / backgroundView 等属性访问子组件。更一般的，iOS APP 的视图一般都有这样的视图体系层次(View Hierarchy): UIWindow —> UIView —> UIImageView…，如下图所示：<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/viewH.png" alt="view hierarchy"><br>借鉴系统框架的思想，进行 iOS 视图层开发时，经常使用视图的组合，创建可复用的视图组件。组件内部使用多个基本系统视图以形成聚合体，来实现更复杂的功能，对外只暴露最上层组件的接口。</p>
 <h4 id="效果-2">效果</h4><ul>
 <li>用户统一使用组合结构中的对象。</li>
 <li>更容易地添加新类型的组件，使设计更一般化。</li>
@@ -219,7 +219,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/07/design-pattern2/" data-id="civdx798z001qvrtrmft1uwq4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/07/design-pattern2/" data-id="civpckmdf001qgctrrctwmh0q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>

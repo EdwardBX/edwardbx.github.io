@@ -153,7 +153,7 @@
 <li>难以支持新种类产品，难以拓展抽象工厂接口。</li>
 </ul>
 <h3 id="生成器模式">生成器模式</h3><h4 id="定义-4">定义</h4><p>将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。</p>
-<h4 id="类图-4">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/builder.png" alt="抽象工厂"><br>该模式把构建对象涉及的类分解成：客户-指导者-生成器(Client-Director-Builder)，把构建中”what”和”how”分离。指导者(Director)类仅仅定义构建何种对象的方法(what)，通过把建造请求发送给生成器(Builder)，而把具体的逐步构建过程和细节(how)交给生成器。</p>
+<h4 id="类图-4">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/builder.png" alt="生成器"><br>该模式把构建对象涉及的类分解成：客户-指导者-生成器(Client-Director-Builder)，把构建中”what”和”how”分离。指导者(Director)类仅仅定义构建何种对象的方法(what)，通过把建造请求发送给生成器(Builder)，而把具体的逐步构建过程和细节(how)交给生成器。</p>
 <h4 id="实践-4">实践</h4><p>在 Facebook 的 Pop 动画框架中，创建一个可动画属性的过程如下所示：</p>
 <pre><code>POPAnimatableProperty *<span class="keyword">prop</span> = [POPAnimatableProperty propertyWithName: @<span class="string">"com.foo.radio.volume"</span>
                                                           initializer: ^(POPMutableAnimatableProperty *<span class="keyword">prop</span>) {
@@ -179,7 +179,7 @@ anim.property = <span class="keyword">prop</span>;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/02/desing-pattern1/" data-id="civdx798x001ovrtr8cmkxegz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/02/desing-pattern1/" data-id="civpckmdd001ogctrskfqhe64" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>

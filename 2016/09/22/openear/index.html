@@ -6,23 +6,18 @@
   <title>OpenEar 语音识别框架使用指南 | 心辰·Dev</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="OpenEar 是基于 CMU PocketSphinx 的开源语音库，提供了丰富的语音合成、语音识别相关的功能，用 Cocoa 风格重新封装了 PocketSphinx 的接口，方便 iOS 开发者快速在 PocketSphinx 基础上进行语音方面的研究和开发。
-文件格式声学模型(Acoustic Model)：可以从 CMU 官网可以下载到训练好的声学模型。 
-
-g2p: 提供字母到音素的转">
+基础原理CMU PocketSphinx 主要有四部分组成：信号处理和特征提取、声学模型、语言模型和解码器。工作流程如图所示：信号处">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenEar 语音识别框架使用指南">
 <meta property="og:url" content="http://yoursite.com/2016/09/22/openear/index.html">
 <meta property="og:site_name" content="心辰·Dev">
 <meta property="og:description" content="OpenEar 是基于 CMU PocketSphinx 的开源语音库，提供了丰富的语音合成、语音识别相关的功能，用 Cocoa 风格重新封装了 PocketSphinx 的接口，方便 iOS 开发者快速在 PocketSphinx 基础上进行语音方面的研究和开发。
-文件格式声学模型(Acoustic Model)：可以从 CMU 官网可以下载到训练好的声学模型。 
-
-g2p: 提供字母到音素的转">
+基础原理CMU PocketSphinx 主要有四部分组成：信号处理和特征提取、声学模型、语言模型和解码器。工作流程如图所示：信号处">
+<meta property="og:image" content="http://7xqdn8.com1.z0.glb.clouddn.com/922477f1ad7b6e7430d2e09709f30b02_b.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OpenEar 语音识别框架使用指南">
 <meta name="twitter:description" content="OpenEar 是基于 CMU PocketSphinx 的开源语音库，提供了丰富的语音合成、语音识别相关的功能，用 Cocoa 风格重新封装了 PocketSphinx 的接口，方便 iOS 开发者快速在 PocketSphinx 基础上进行语音方面的研究和开发。
-文件格式声学模型(Acoustic Model)：可以从 CMU 官网可以下载到训练好的声学模型。 
-
-g2p: 提供字母到音素的转">
+基础原理CMU PocketSphinx 主要有四部分组成：信号处理和特征提取、声学模型、语言模型和解码器。工作流程如图所示：信号处">
   
     <link rel="alternative" href="/atom.xml" title="心辰·Dev" type="application/atom+xml">
   
@@ -97,22 +92,22 @@ g2p: 提供字母到音素的转">
     <div class="article-entry" itemprop="articleBody">
       
         <p>OpenEar 是基于 CMU PocketSphinx 的开源语音库，提供了丰富的语音合成、语音识别相关的功能，用 Cocoa 风格重新封装了 PocketSphinx 的接口，方便 iOS 开发者快速在 PocketSphinx 基础上进行语音方面的研究和开发。</p>
+<h3 id="基础原理">基础原理</h3><p>CMU PocketSphinx 主要有四部分组成：信号处理和特征提取、声学模型、语言模型和解码器。工作流程如图所示：<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/922477f1ad7b6e7430d2e09709f30b02_b.png" alt="语音识别系统组成图"><br>信号处理和特征提取部分以音频信号为输入，通过消除噪音、信道失真等对语音进行增强，将语音信号从时域转化到频域，并为后面的声学模型提取合适的特征。声学模型将声学和发音学的知识进行整合，以特征提取模块提取的特征为输入，生成声学模型得分。语言模型估计通过重训练语料学习词之间的相互概率，来估计假设词序列的可能性，也即语言模型得分。如果了解领域或者任务相关的先验知识，语言模型得分通常可以估计的更准确。解码器对给定的特征向量序列和若干假设词序列计算声学模型得分和语言模型得分，将总体输出分数最高的词序列作为识别结果。PocketSphinx 使用的是梅尔倒谱系数特征和混合高斯-隐马尔科夫(GMM-HMM)声学模型。<br><a id="more"></a></p>
 <h3 id="文件格式">文件格式</h3><h4 id="声学模型(Acoustic_Model)：">声学模型(Acoustic Model)：</h4><p>可以从 CMU 官网可以下载到训练好的声学模型。 </p>
 <ul>
 <li>g2p: 提供字母到音素的转换，利用规则对字母生成发音，用来生成发音字典。</li>
 <li>feat.params: 特征提取中所使用的参数列表。</li>
 <li>mdef: 对 Tri-Phone 进行聚类形成 senone, 该文件定义了 Tri-Phone 到 senones 的映射定义。</li>
-<li>means: 保存高斯 codebook 均值的文件。</li>
-<li>variances: 保存高斯 codebook 方差的文件。</li>
-<li>sendump: 高斯混合模型的压缩文件。</li>
-<li>transition_matrices: HMM 转移矩阵。</li>
-<li>noisedict: 噪声过滤字典。其中还包括标示一段语音开始和结束的语音信息。<a id="more"></a>
-</li>
+<li>means: 保存模型中多个概率分布均值的文件。</li>
+<li>variances: 保存模型中多个概率分布方差的文件。</li>
+<li>sendump: 量化并压缩的混合高斯模型。</li>
+<li>transition_matrices: 隐马尔科夫模型的概率转移矩阵。</li>
+<li>noisedict: 噪声过滤字典。其中还包括标示一段语音开始和结束的语音信息。</li>
 </ul>
 <h4 id="语言模型(Language_Model)">语言模型(Language Model)</h4><p>实际是概率分布模型，其中内容包括 corpus 中所有的字符串和其对应的出现概率。语言模型老版的格式后缀为<code>.arpa</code>，新版为<code>.lm</code>。实际使用的是由<code>.arpa</code>压缩为二进制格式的<code>.DMP</code>文件。</p>
 <h4 id="字典文件(-dic)">字典文件(.dic)</h4><p>根据声学模型生成的字典，其中包括 corpus 中所有的字符串和其对应的发音，提供了声学模型建模单元与语言模型建模单元间的映射。</p>
 <h4 id="语法文件(-gram)">语法文件(.gram)</h4><p>根据 JSGF 语法生成，规定识别过程中的固定语法。</p>
-<h3 id="基本使用">基本使用</h3><ol>
+<h3 id="使用步骤">使用步骤</h3><ol>
 <li>把 openear.framework 加入 Link Binary With Libraries.</li>
 <li>将声学模型 AcousticModelChinese.bundle 加入工程的 Copy Bundle Resource.</li>
 <li>根据官方 demo 初步学习使用。</li>
@@ -143,7 +138,7 @@ g2p: 提供字母到音素的转">
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/09/22/openear/" data-id="civdx7988000yvrtrw5d48qrg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/09/22/openear/" data-id="civpckmcn000ygctr4fhsuj5g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>

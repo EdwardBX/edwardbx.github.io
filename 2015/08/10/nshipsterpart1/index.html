@@ -111,10 +111,10 @@
 <li>在框架层面，<code>NSNull</code>是一个类，<code>[NSNull null]</code> 返回一个<code>NSNull</code>的单例。</li>
 <li>在<code>&lt;Foundation/NSObjcRuntime.h&gt;</code>, <code>Nil</code>被定义为指向空的类指针。</li>
 </ol>
-<p>在<code>NSObjet</code>刚被分配内存时，所有指向其他对象的指针都为<code>nil</code>。<br><code>NSNull</code>可以被存入 collection 类。<code>NSNull</code>是对<code>NULL</code>和<code>nil</code>的封装，以便可以在 collection 类中保存。<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/null.png" alt="NULL"></p>
+<p>在<code>NSObjet</code>刚被分配内存时，所有指向其他对象的指针都为<code>nil</code>。<br><code>NSNull</code>可以被存入 collection 类。<code>NSNull</code>是对<code>NULL</code>和<code>nil</code>的封装，以便可以在 collection 类中保存。<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/null.png" alt="NULL / nil / NSNull"></p>
 <h3 id="BOOL_/_bool_/_Boolean_/_NSNumber">BOOL / bool / Boolean / NSNumber</h3><p>32-bit iOS 系统中，<code>BOOL</code>是一个 signed char 的<code>typedef</code>，用<code>YES</code>/<code>NO</code>的宏代表 true or false.<br>64-bit iOS 系统中，<code>BOOL</code>是一个<code>bool</code>。<br>以下代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSLog(@“%@”, [@(YES) <span class="keyword">class</span>]);</span><br></pre></td></tr></table></figure></p>
 <p>会输出：<br><code>__NSCFBoolean</code></p>
-<p><code>NSCFBoolean</code>是在<code>NSNumber</code>类簇中一个私有类。桥接<code>CFBooleanRef</code>类型。<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/bool.png" alt="image"></p>
+<p><code>NSCFBoolean</code>是在<code>NSNumber</code>类簇中一个私有类。桥接<code>CFBooleanRef</code>类型。<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/bool.png" alt="BOOL / bool / Boolean / NSNumber"></p>
 <h3 id="相等性">相等性</h3><p>NSObject 的<code>isEqual:</code>方法比较两个实例地址是否相同(本体性检查)。如果要对自定义的类进行相等性比较，要有以下三步：   </p>
 <ol>
 <li>实现<code>isEqualToClassName:</code>方法，在该方法中对类中成员的值进行逐一比较。</li>
@@ -165,7 +165,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/08/10/nshipsterpart1/" data-id="civdx798f0013vrtr49mfz06w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/08/10/nshipsterpart1/" data-id="civpckmcs0013gctrf79ayq0b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Objective-C/">Objective-C</a></li></ul>
