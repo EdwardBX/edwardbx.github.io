@@ -1,34 +1,130 @@
 <!doctype html>
-<html class="theme-next use-motion ">
-<head>
+
+
+
   
 
-<meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
 
-
-
-
-  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
-
-
-<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.2"/>
-
-
-    <meta name="description" content="薛冰心的博客" />
-
-
-
-  <meta name="keywords" content="Hexo,next" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
 
 
 
 
 
-  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.2" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="薛冰心的博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="心辰·Dev">
+<meta property="og:url" content="http://edwardbx.github.io/index.html">
+<meta property="og:site_name" content="心辰·Dev">
+<meta property="og:description" content="薛冰心的博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="心辰·Dev">
+<meta name="twitter:description" content="薛冰心的博客">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://edwardbx.github.io/"/>
+
 
 
 
@@ -36,107 +132,195 @@
   <title> 心辰·Dev </title>
 </head>
 
-<body>
-<!--[if lte IE 8]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari." style='margin-left:auto;margin-right:auto;display: block;'/></a></div> <![endif]-->
-  <div class="container one-column 
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
    page-home 
-">
+ ">
     <div class="headband"></div>
 
-    <div id="header" class="header">
-      <div class="header-inner">
-        <h1 class="site-meta">
-  <span class="logo-line-before"><i></i></span>
-  <a href="/" class="brand">
-      <span class="logo">
-        <i class="icon-logo"></i>
-      </span>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
       <span class="site-title">心辰·Dev</span>
-  </a>
-  <span class="logo-line-after"><i></i></span>
-</h1>
-
-
-  <ul id="menu" class="menu">
-     
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
     
+      <p class="site-subtitle">iOS 开发小记</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
       
-      <li class="menu-item menu-item-home">
-        <a href="/">
-          <i class="menu-item-icon icon-home"></i> <br />
-          首页
-        </a>
-      </li>
-    
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
       
-      <li class="menu-item menu-item-about">
-        <a href="/about">
-          <i class="menu-item-icon icon-about"></i> <br />
-          关于
-        </a>
-      </li>
-    
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
       
-      <li class="menu-item menu-item-archives">
-        <a href="/archives">
-          <i class="menu-item-icon icon-archives"></i> <br />
-          归档
-        </a>
-      </li>
-    
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
       
-      <li class="menu-item menu-item-tags">
-        <a href="/tags">
-          <i class="menu-item-icon icon-tags"></i> <br />
-          标签
-        </a>
-      </li>
-    
-  </ul>
+
+      
+    </ul>
+  
+
+  
+</nav>
 
 
-      </div>
-    </div>
 
-    <div id="main" class="main">
+ </div>
+    </header>
+
+    <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content">
-          
-  <div id="posts" class="posts-expand">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/11/07/design-pattern2/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/07/design-pattern2/" itemprop="url">
+                  iOS 开发常见设计模式解析 | 结构型模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-07T20:57:17+08:00">
+                2016-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/11/07/design-pattern2/">
-                iOS 开发常见设计模式解析 | 结构型模式
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-11-07
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -150,22 +334,29 @@
 <li>使用一个可复用的类，该类与其他不相关或不可预见的类协同工作。</li>
 <li>适配的目标(Target)与被适配者(Adaptee)接口越不相似，需要适配器做的工作越多。</li>
 <li>继承两个目标(Target)可以实现双向适配器，提供透明操作。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/07/design-pattern2/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/11/07/design-pattern2/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -174,44 +365,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/11/02/desing-pattern1/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/02/desing-pattern1/" itemprop="url">
+                  iOS 开发常见设计模式解析 | 创建型模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-02T21:52:38+08:00">
+                2016-11-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/11/02/desing-pattern1/">
-                iOS 开发常见设计模式解析 | 创建型模式
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-11-02
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -232,22 +472,29 @@
     <span class="keyword">return</span> sharedinstance;
 }
 </code></pre>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/02/desing-pattern1/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/11/02/desing-pattern1/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -256,44 +503,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/10/09/blockimpl/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/09/blockimpl/" itemprop="url">
+                  Block 底层探秘
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-09T23:32:14+08:00">
+                2016-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/10/09/blockimpl/">
-                Block 底层探秘
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-10-09
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -304,26 +600,29 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">void</span> (^blk)(<span class="keyword">void</span>) = ^&#123;<span class="built_in">printf</span>(<span class="string">"Block\n"</span>);&#125;;</span><br><span class="line">    blk();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>经过<code>clang -rewrite-objc</code>的转换，可以得到 Block 结构体的声明：    </p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __block_impl &#123;</span><br><span class="line">    <span class="keyword">void</span> *isa;</span><br><span class="line">    <span class="keyword">int</span> Flags;</span><br><span class="line">    <span class="keyword">int</span> Reserved;</span><br><span class="line">    <span class="keyword">void</span> *FuncPtr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/10/09/blockimpl/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/10/09/blockimpl/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/C/"> #C </a>
-          
-            <a href="/tags/Objective-C/"> #Objective-C </a>
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -332,44 +631,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/09/22/openear/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/22/openear/" itemprop="url">
+                  OpenEar 语音识别框架使用指南
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-22T22:57:43+08:00">
+                2016-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/09/22/openear/">
-                OpenEar 语音识别框架使用指南
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-09-22
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -378,22 +726,29 @@
         
           <p>OpenEar 是基于 CMU PocketSphinx 的开源语音库，提供了丰富的语音合成、语音识别相关的功能，用 Cocoa 风格重新封装了 PocketSphinx 的接口，方便 iOS 开发者快速在 PocketSphinx 基础上进行语音方面的研究和开发。</p>
 <h3 id="基础原理">基础原理</h3><p>CMU PocketSphinx 主要有四部分组成：信号处理和特征提取、声学模型、语言模型和解码器。工作流程如图所示：<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/922477f1ad7b6e7430d2e09709f30b02_b.png" alt="语音识别系统组成图"><br>信号处理和特征提取部分以音频信号为输入，通过消除噪音、信道失真等对语音进行增强，将语音信号从时域转化到频域，并为后面的声学模型提取合适的特征。声学模型将声学和发音学的知识进行整合，以特征提取模块提取的特征为输入，生成声学模型得分。语言模型估计通过重训练语料学习词之间的相互概率，来估计假设词序列的可能性，也即语言模型得分。如果了解领域或者任务相关的先验知识，语言模型得分通常可以估计的更准确。解码器对给定的特征向量序列和若干假设词序列计算声学模型得分和语言模型得分，将总体输出分数最高的词序列作为识别结果。PocketSphinx 使用的是梅尔倒谱系数特征和混合高斯-隐马尔科夫(GMM-HMM)声学模型。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/22/openear/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/22/openear/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -402,44 +757,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/07/03/nonjbtweak/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/03/nonjbtweak/" itemprop="url">
+                  iOS 非越狱环境应用插件开发流程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-03T23:49:31+08:00">
+                2016-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/07/03/nonjbtweak/">
-                iOS 非越狱环境应用插件开发流程
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-07-03
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -456,22 +860,29 @@
 </ul>
 <h3 id="定位目标函数">定位目标函数</h3><p>在掌握上文所述工具后，就可以着手进行插件的开发。首先应该思考插件要实现的需求，找到相关的视图和控制器。第一步可以先使用 class-dump 分析已砸壳的 APP，class-dump 可以根据 Mach-O 文件中的符号表( symbol table )分析出所有的类名和方法声明。 </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~ » ./class-dump -H -o /header/path WeChat</span><br></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/03/nonjbtweak/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/07/03/nonjbtweak/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -480,44 +891,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/03/08/wkwebview/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/08/wkwebview/" itemprop="url">
+                  WKWebView 兼容 iOS7 实践
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-08T20:08:16+08:00">
+                2016-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/03/08/wkwebview/">
-                WKWebView 兼容 iOS7 实践
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-03-08
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -532,22 +992,29 @@
 <li>开放了更多的 API.</li>
 </ol>
 <p>这已经足以让我们考虑在支持 iOS8 设备的应用中使用 WKWebView.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/08/wkwebview/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/03/08/wkwebview/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -556,44 +1023,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/02/15/uiappearance/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/15/uiappearance/" itemprop="url">
+                  UIAppearance 详解(译)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-15T17:22:48+08:00">
+                2016-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/02/15/uiappearance/">
-                UIAppearance 详解(译)
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-02-15
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -603,22 +1119,29 @@
           <p>声明：本文译自《NSHipster》     </p>
 <p>风格 vs. 实质，信息 vs. 媒介，言辞 vs. 逻辑。<br>美丽仅是肤浅的表面，还是更深层的事实？某个事物有好的设计意味着什么？审美的判断是绝对的，还是因人而异的？<br>这些是哲学家、艺术家、创作者千年来反复思索的深刻问题。<br>当我们都继续着对宇宙中美和真理的追求，APP 销售市场清晰印证了以下的话：<br><strong>用户会为好看的软件付出更多的钱。</strong>   </p>
 <p>当一个人买下一台 iPhone，他其实买的是苹果公司的哲学：好用的东西同时可以很好看。当我们选择为 iOS 平台开发应用时，我们也是抱着同样的信念。一套稀烂的 UI 反映了其下糟糕的代码。<br>曾经在 iOS 平台上，使用像方法调剂(Method Swizzling)这样的技术来实现 UI 个性化，绕过 AppStore 的上架审核。幸运的是，随着 iOS 5 的改变，开发者有更简单的方法来实现：<code>UIAppearance</code>.<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/15/uiappearance/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/02/15/uiappearance/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -627,44 +1150,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/01/30/webview/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/30/webview/" itemprop="url">
+                  Objective-C 和 JavaScript 双向交互详解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-30T22:08:08+08:00">
+                2016-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/01/30/webview/">
-                Objective-C 和 JavaScript 双向交互详解
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-01-30
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -676,26 +1248,29 @@
 <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myJavascriptFunction</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">// 实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>OC 文件中:</p>
 <figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="collection">[webview stringByEvaluatingJavaScriptFromString: @“myJavascriptFunction<span class="list">()</span>”]</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/30/webview/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/30/webview/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/JavaScript/"> #JavaScript </a>
-          
-            <a href="/tags/Objective-C/"> #Objective-C </a>
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -704,44 +1279,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2016/01/23/appskin/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/01/23/appskin/" itemprop="url">
+                  搭建 APP 内皮肤切换框架
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-23T16:21:18+08:00">
+                2016-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2016/01/23/appskin/">
-                搭建 APP 内皮肤切换框架
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2016-01-23
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -750,22 +1374,29 @@
         
           <h3 id="开源方案">开源方案</h3><p><a href="https://github.com/rnystrom/RNThemeManager">RNThemeManager</a> 提供了一种优雅的方案。这种方案将主题的配色或字体配置保存在静态 Plist 中，每次切换主题时，用单例 manager 类从 Plist 配置文件中读取样式信息。然后创建了一套可更换皮肤主题的父视图控件，控件初始化时(init)在通知中心注册为观察者，监听主题切换的通知，在接到通知时，将颜色和字体更改为指定的样式。这个更换皮肤的框架非常简洁，但在成熟项目中应用，需要把已有页面中的控件都继承自那套统一的可更换皮肤的父控件，或者把自定义的 view 注册到通知中心并自己实现变化皮肤的方法，代码改动较大，如：</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义的 ViewController 或 View 遵从 RNThemeUpdateProtocol 并实现 applyTheme 方法</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MYViewController</span> : <span class="title">UIViewController</span></span></span><br><span class="line">&lt;RNThemeUpdateProtocol&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 -viewDidLoad 中注册到通知中心</span></span><br><span class="line">[[<span class="built_in">NSNotificationCenter</span> defaultCenter] addObserver:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(applyTheme) withObject:<span class="literal">nil</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 -viewWillAppear (或 layout 视图的方法中)</span></span><br><span class="line">[<span class="keyword">self</span> applyTheme];</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)applyTheme &#123;</span><br><span class="line">    <span class="keyword">self</span><span class="variable">.view</span><span class="variable">.backgroundColor</span> = [[RNThemeManager sharedManager] colorForKey:<span class="string">@"backgroundColor"</span>];</span><br><span class="line">    <span class="keyword">self</span><span class="variable">.textField</span><span class="variable">.font</span> = [[RNThemeManager sharedManager] fontForKey:<span class="string">@"textFieldFont"</span>];</span><br><span class="line">    <span class="keyword">self</span><span class="variable">.textField</span><span class="variable">.layer</span><span class="variable">.cornerRadius</span> = [RNThemeManager sharedManager]<span class="variable">.styles</span>[<span class="string">@"cornerRadius"</span>]<span class="variable">.floatValue</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/23/appskin/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/01/23/appskin/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/"> #iOS </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -774,44 +1405,93 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
       
 
-  <div class="post post-type-normal ">
-    <div class="post-header">
+  
 
-      
-      
-        <h1 class="post-title">
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://edwardbx.github.io/2015/12/26/gerrit-password/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="BingXin Xue">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="心辰·Dev">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="心辰·Dev" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/26/gerrit-password/" itemprop="url">
+                  PHP 实现 Gerrit 用户密码修改
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-26T16:48:57+08:00">
+                2015-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
+
           
             
-              <a class="post-title-link" href="/2015/12/26/gerrit-password/">
-                PHP 实现 Gerrit 用户密码修改
-              </a>
-            
           
-        </h1>
-      
 
-      <div class="post-meta">
-        <span class="post-time">
-          发表于 2015-12-26
-        </span>
-
-        
-
-        
           
-        
-      </div>
-    </div>
+          
 
-    <div class="post-body">
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
@@ -819,22 +1499,29 @@
       
         
           <h3 id="需求描述">需求描述</h3><p>在 Gerrit 的使用中，发现 Google 在这个框架中没有提供用户自助修改密码的功能，和 SVN 的情况相似，需要添加一个修改密码的页面。公司的 Gerrit 平台使用 HTTP Basic Authentication 方式来进行用户登录认证，由 htpasswd 命令生成的密码集中保存在一个默认的文件中。那么该页面的需求就可以细化为：对用户输入合法性做基本判断，从指定路径读取密码文件，用系统命令 htpasswd 修改密码。本文选择用 PHP 语言来实现该页面需求。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/12/26/gerrit-password/#more">
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/26/gerrit-password/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
+          <!--/noindex-->
         
       
     </div>
 
-    <div class="post-footer">
+    <div>
       
-        <div class="post-tags">
-          
-            <a href="/tags/PHP/"> #PHP </a>
-          
-        </div>
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
       
 
       
@@ -843,26 +1530,29 @@
       
         <div class="post-eof"></div>
       
-    </div>
-  </div>
+    </footer>
+  </article>
 
 
     
-  </div>
+  </section>
 
   
-  <div class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
-  </div>
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
 
+
+          
+          </div>
+          
+
+
+          
 
         </div>
-
         
-      </div>
-
-
-      
+          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -872,40 +1562,46 @@
     </div>
   </div>
 
-  <div id="sidebar" class="sidebar">
+  <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
 
       
 
-      <div class="site-overview">
-        <div class="site-author motion-element">
-          <img class="site-author-image" src="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg" alt="BingXin Xue" />
-          <p class="site-author-name">BingXin Xue</p>
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://i1.tietuku.com/f5a9fec9cee47fbf.jpg"
+               alt="BingXin Xue" />
+          <p class="site-author-name" itemprop="name">BingXin Xue</p>
+           
+              <p class="site-description motion-element" itemprop="description">薛冰心的博客</p>
+          
         </div>
-        <p class="site-description motion-element">薛冰心的博客</p>
-        <div class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">24</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          <div class="site-state-item site-state-categories">
-            
-              <span class="site-state-item-count">0</span>
-              <span class="site-state-item-name">分类</span>
-              
-          </div>
-
-          <div class="site-state-item site-state-tags">
-            <a href="/tags">
-              <span class="site-state-item-count">11</span>
-              <span class="site-state-item-name">标签</span>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
               </a>
-          </div>
+            </div>
+          
 
-        </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
 
         
 
@@ -913,20 +1609,40 @@
           
             
               <span class="links-of-author-item">
-              <a href="https://github.com/EdwardBX" target="_blank">github</a>
-            </span>
+                <a href="https://github.com/EdwardBX" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
             
               <span class="links-of-author-item">
-              <a href="http://weibo.com/u/5106446763" target="_blank">weibo</a>
-            </span>
+                <a href="http://weibo.com/u/5106446763" target="_blank" title="weibo">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  weibo
+                </a>
+              </span>
             
               <span class="links-of-author-item">
-              <a href="http://www.douban.com/people/127211499/" target="_blank">douban</a>
-            </span>
+                <a href="http://www.douban.com/people/127211499/" target="_blank" title="douban">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  douban
+                </a>
+              </span>
             
               <span class="links-of-author-item">
-              <a href="http://www.zhihu.com/people/xbx2014" target="_blank">zhihu</a>
-            </span>
+                <a href="http://www.zhihu.com/people/xbx2014" target="_blank" title="zhihu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  zhihu
+                </a>
+              </span>
             
           
         </div>
@@ -934,230 +1650,71 @@
         
         
 
-      </div>
+        
+        
+
+        
+
+
+      </section>
 
       
 
     </div>
-  </div>
+  </aside>
 
 
-    </div>
+        
+      </div>
+    </main>
 
-    <div id="footer" class="footer">
+    <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        <div class="copyright" >
   
-  &copy; &nbsp;  2014 - 
-  2017
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
-    <i class="icon-heart"></i>
+    <i class="fa fa-heart"></i>
   </span>
-  <span class="author">BingXin Xue</span>
+  <span class="author" itemprop="copyrightHolder">BingXin Xue</span>
 </div>
 
+
 <div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT
+    NexT.Muse
   </a>
 </div>
 
 
+        
 
+        
       </div>
-    </div>
+    </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
   
 
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      $('.content img').each(function () {
-        var $image = $(this);
-        var $imageWrapLink = $image.parent('a');
-
-        if ($imageWrapLink.size() < 1) {
-          $imageWrapLink = $image.wrap('<a href="' + this.getAttribute('src') + '"></a>').parent('a');
-        }
-        $imageWrapLink.addClass('fancybox');
-      });
-    });
-    $('.fancybox').fancybox({
-      helpers: {
-        overlay: {
-          locked: false
-        }
-      }
-    });
-  </script>
-
-
-  <script type="text/javascript">
-  function hasMobileUA () {
-    var nav = window.navigator;
-    var ua = nav.userAgent;
-    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g;
-
-    return pa.test(ua);
-  }
-
-  function isDesktop () {
-    return screen.width > 991 && !hasMobileUA();
-  }
-
-  function isTablet () {
-    return screen.width < 992 && screen.width > 767 && hasMobileUA();
-  }
-
-  function isMobile () {
-    return screen.width < 767 && hasMobileUA();
-  }
-
-  function escapeSelector (selector) {
-    return selector.replace(/[!"$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&")
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
   }
 </script>
 
-  
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" id="motion.global">
-  $(document).ready(function () {
-    var body = $('body');
-    var isSidebarVisible = false;
-    var sidebarToggle = $('.sidebar-toggle');
-    var sidebarToggleLine1st = $('.sidebar-toggle-line-first')
-    var sidebarToggleLine2nd = $('.sidebar-toggle-line-middle');
-    var sidebarToggleLine3rd = $('.sidebar-toggle-line-last');
-    var sidebar = $('.sidebar');
-
-    var SIDEBAR_WIDTH = '320px';
-    var SIDEBAR_DISPLAY_DURATION = 300;
-
-    var sidebarToogleLineStatusInit = {width: '100%', opacity: 1, left: 0, rotateZ: 0, top: 0};
-
-    var sidebarToggleLine1stStatusInit = sidebarToogleLineStatusInit;
-    var sidebarToggleLine1stStatusArrow = {width: '50%', rotateZ: '-45deg', top: '2px'};
-    var sidebarToogleLine1stStatusClose = {width: '100%', rotateZ: '-45deg', top: '5px'};
-
-    var sidebarToggleLine2ndStatusInit = sidebarToogleLineStatusInit;
-    var sidebarToggleLine2ndStatusArrow = {width: '90%'};
-    var sidebarToogleLine2ndStatusClose = {opacity: 0};
-
-    var sidebarToggleLine3rdStatusInit = sidebarToogleLineStatusInit;
-    var sidebarToggleLine3rdStatusArrow = {width: '50%', rotateZ: '45deg', top: '-2px'};
-    var sidebarToogleLine3rdStatusClose = {width: '100%', rotateZ: '45deg', top: '-5px'};
-
-    LogoAndMenuMotion();
-    sidebatToggleMotion();
-    postsListMotion();
-    backToTopMotion();
 
 
-    $(document)
-      .on('sidebar.isShowing', function () {
-        isDesktop() && body.velocity(
-          {paddingRight: SIDEBAR_WIDTH},
-          SIDEBAR_DISPLAY_DURATION
-        );
-        sidebarContentMotion();
-      })
-      .on('sidebar.isHiding', function () {});
 
-    function LogoAndMenuMotion() {
-      $.Velocity.RunSequence([
-        { e: $('.brand'), p: { opacity: 1 }, o: { duration: 100 } },
-        { e: $('.logo'), p: { opacity: 1, top: 0 }, o: { duration: 50} },
-        
-        { e: $('.site-title'), p: { opacity: 1, top: 0 }, o: { duration: 200 } }
-      ]);
-      $('.menu-item').velocity('transition.slideDownIn', {display: null});
-    }
-
-
-    function backToTopMotion () {
-      var b2top = $('.back-to-top');
-      b2top.on('click', function () {
-        body.velocity('scroll');
-      });
-    }
-
-    function sidebarShowMotion () {
-
-      sidebarToggleLine1st.velocity(sidebarToogleLine1stStatusClose);
-      sidebarToggleLine2nd.velocity(sidebarToogleLine2ndStatusClose);
-      sidebarToggleLine3rd.velocity(sidebarToogleLine3rdStatusClose);
-
-      sidebar.velocity({width: SIDEBAR_WIDTH}, {
-        display: 'block',
-        duration: SIDEBAR_DISPLAY_DURATION,
-        complete: function () {
-          sidebar.addClass('sidebar-active');
-          sidebar.trigger('sidebar.didShow');
-        }
-      });
-      sidebar.trigger('sidebar.isShowing');
-    }
-
-    function sidebarHideMotion () {
-      isDesktop() && body.velocity({paddingRight: 0});
-      sidebar.velocity('reverse');
-
-      sidebarToggleLine1st.velocity(sidebarToggleLine1stStatusInit);
-      sidebarToggleLine2nd.velocity(sidebarToggleLine2ndStatusInit);
-      sidebarToggleLine3rd.velocity(sidebarToggleLine3rdStatusInit);
-
-      sidebar.removeClass('sidebar-active');
-      sidebar.trigger('sidebar.isHiding');
-    };
-
-    function sidebarContentMotion () {
-      $('.sidebar .motion-element').velocity(
-        'transition.slideRightIn',
-        {stagger: 50, drag: true}
-      );
-    }
-
-    function postsListMotion () {
-      var postMotionOptions = window.postMotionOptions || {stagger: 300, drag: true};
-      $('.post').velocity('transition.slideDownIn', postMotionOptions);
-    }
-
-    function sidebatToggleMotion () {
-      sidebarToggle.on('click', function () {
-        isSidebarVisible ? sidebarHideMotion() : sidebarShowMotion();
-        isSidebarVisible = !isSidebarVisible;
-      });
-
-      sidebarToggle.hover(function () {
-        if (isSidebarVisible) {return}
-        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusArrow);
-        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusArrow);
-        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusArrow);
-      }, function () {
-        if (isSidebarVisible) {return}
-        sidebarToggleLine1st.velocity('stop').velocity(sidebarToggleLine1stStatusInit);
-        sidebarToggleLine2nd.velocity('stop').velocity(sidebarToggleLine2ndStatusInit);
-        sidebarToggleLine3rd.velocity('stop').velocity(sidebarToggleLine3rdStatusInit);
-      });
-    }
-  });
-
-</script>
 
 
 
@@ -1165,18 +1722,91 @@
 
   
 
-  
-
-  
-  
-  
-
-  
-
 
 
 
   
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
   
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
 </body>
 </html>
