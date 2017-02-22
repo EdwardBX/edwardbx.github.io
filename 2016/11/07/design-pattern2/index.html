@@ -358,30 +358,8 @@
 </ul>
 <h3 id="桥接">桥接</h3><h4 id="定义-1">定义</h4><p>将抽象部分与它的实现部分分离，使它们都可以独立地变化。</p>
 <h4 id="类图-1">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/桥接.png" alt="桥接"><br>将抽象和它的实现部分分别放在独立的类层次结构中。抽象接口(Abstraction)维护一个指向实现对象(Implementor)的指针。实现类(Implementor)接口提供基本操作，而抽象(Abstraction)定义更高层次的操作。</p>
-<h4 id="实践-1">实践</h4><p>iOS 开发中常用的类大多数是底层类的抽象层，它们直接使用 Core Foundation 及其相关框架中暴露的 C API 来完成更高层次的操作，底层具体复杂的实现对 iOS 开发者大多数情况下是透明的。<br>在使用第三方框架时，不同框架对相同功能的实现可能有所不同，如果对框架的接口直接使用，后期想切换至另一套类似的框架，将造成业务代码多处改动。如果在三方库之上再抽象一层，即抽象出一套固定的接口(Abstraction)，在抽象层引用实现类并使用实现类的 API, 当要切换至另一套类似框架时，只需更改抽象层的实现，而不用改动上层业务代码。如以下接口实现了对 AFNetworking 框架 HTTP 请求功能的抽象：</p>
-<pre><code>- (<span class="type">NSURLSessionDataTask</span> *)dataTaskWithHTTPMethod:(<span class="type">NSString</span> *)<span class="keyword">method</span>
-                               requestSerializer:(<span class="type">AFHTTPRequestSerializer</span> *)requestSerializer
-                                       <span class="type">URLString</span>:(<span class="type">NSString</span> *)<span class="type">URLString</span>
-                                      parameters:(id)parameters
-                       constructingBodyWithBlock:(nullable <span class="type">void</span> (^)(id &lt;<span class="type">AFMultipartFormData</span>&gt; formData))<span class="keyword">block</span>
-                                           error:(<span class="type">NSError</span> * _Nullable __autoreleasing *)error {
-    <span class="type">NSMutableURLRequest</span> *request = <span class="keyword">nil</span>;
-
-    <span class="keyword">if</span> (<span class="keyword">block</span>) {
-        request = [requestSerializer multipartFormRequestWithMethod:<span class="keyword">method</span> <span class="type">URLString</span>:<span class="type">URLString</span> parameters:parameters constructingBodyWithBlock:<span class="keyword">block</span> error:error];
-    } <span class="keyword">else</span> {
-        request = [requestSerializer requestWithMethod:<span class="keyword">method</span> <span class="type">URLString</span>:<span class="type">URLString</span> parameters:parameters error:error];
-    }
-
-    __block <span class="type">NSURLSessionDataTask</span> *dataTask = <span class="keyword">nil</span>;
-    dataTask = [_manager dataTaskWithRequest:request
-                           completionHandler:^(<span class="type">NSURLResponse</span> * __unused response, id responseObject, <span class="type">NSError</span> *_error) {
-                            [self handleRequestResult:dataTask responseObject:responseObject error:_error];
-                }];
-
-    <span class="keyword">return</span> dataTask;
-}
-</code></pre><h4 id="效果-1">效果</h4><ul>
+<h4 id="实践-1">实践</h4><p>iOS 开发中常用的类大多数是底层类的抽象层，它们直接使用 Core Foundation 及其相关框架中暴露的 C API 来完成更高层次的操作，底层具体复杂的实现对 iOS 开发者大多数情况下是透明的。<br>在使用第三方框架时，不同框架对相同功能的实现可能有所不同，如果对框架的接口直接使用，后期想切换至另一套类似的框架，将造成业务代码多处改动。如果在三方库之上再抽象一层，即抽象出一套固定的接口(Abstraction)，在抽象层引用实现类并使用实现类的 API, 当要切换至另一套类似框架时，只需更改抽象层的实现，而不用改动上层业务代码。如以下接口实现了对 AFNetworking 框架 HTTP 请求功能的抽象：<br>    <figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">NSURLSessionDataTask</span> *)dataTaskWithHTTPMethod:(<span class="type">NSString</span> *)<span class="keyword">method</span></span><br><span class="line">                               requestSerializer:(<span class="type">AFHTTPRequestSerializer</span> *)requestSerializer</span><br><span class="line">                                       <span class="type">URLString</span>:(<span class="type">NSString</span> *)<span class="type">URLString</span></span><br><span class="line">                                      parameters:(id)parameters</span><br><span class="line">                       constructingBodyWithBlock:(nullable <span class="type">void</span> (^)(id &lt;<span class="type">AFMultipartFormData</span>&gt; formData))<span class="keyword">block</span></span><br><span class="line">                                           error:(<span class="type">NSError</span> * _Nullable __autoreleasing *)error &#123;</span><br><span class="line">       <span class="type">NSMutableURLRequest</span> *request = <span class="keyword">nil</span>;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (<span class="keyword">block</span>) &#123;</span><br><span class="line">           request = [requestSerializer multipartFormRequestWithMethod:<span class="keyword">method</span> <span class="type">URLString</span>:<span class="type">URLString</span> parameters:parameters constructingBodyWithBlock:<span class="keyword">block</span> error:error];</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           request = [requestSerializer requestWithMethod:<span class="keyword">method</span> <span class="type">URLString</span>:<span class="type">URLString</span> parameters:parameters error:error];</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       __block <span class="type">NSURLSessionDataTask</span> *dataTask = <span class="keyword">nil</span>;</span><br><span class="line">       dataTask = [_manager dataTaskWithRequest:request</span><br><span class="line">                           completionHandler:^(<span class="type">NSURLResponse</span> * __unused response, id responseObject, <span class="type">NSError</span> *_error) &#123;</span><br><span class="line">                               [self handleRequestResult:dataTask responseObject:responseObject error:_error];</span><br><span class="line">                   &#125;];</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> dataTask;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="效果-1">效果</h4><ul>
 <li>抽象和实现没有固定的绑定关系，运行时实现部分可被切换。</li>
 <li>对一个抽象的实现部分的修改不对客户产生影响。</li>
 <li>在多个对象间共享实现，同时实现细节对客户透明。</li>
@@ -395,48 +373,15 @@
 </ul>
 <h3 id="装饰">装饰</h3><h4 id="定义-3">定义</h4><p>动态地给一个对象添加一些额外的职责，装饰模式比生成子类更为灵活。</p>
 <h4 id="类图-3">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/装饰.png" alt="装饰"><br>组件(Component)定义一个对象接口，具体组件(ConcreteComponent)定义了一个对象，可以给这个对象添加一些职责。装饰者(Decorator)维持指向组件对象的指针，并定义一个与组件接口一致的接口，具体装饰者(ConcreteDecorator)重载父类的接口并向内嵌的组件转发请求，并在转发请求前后执行一些附加动作。</p>
-<h4 id="实践-3">实践</h4><p>Objc 本身支持为类添加扩展(Category)，而不会对原有类本身造成不好的影响。Category 中的方法成为了类的一部分，可以被其子类继承。这些额外的方法是动态添加的，不同于匿名扩展(Extension)在编译期绑定，所以要谨慎防止添加的方法和原有方法产生命名冲突，否则扩展中的方法存在于方法列表中更靠前的位置，在原有类查找方法列表时优先被发现，进而会覆盖掉原有方法的实现。在类拓展中运用方法调剂可以在不改变组件(Component)接口的前提下，实现动态添加职责的效果，如下代码所示：  </p>
-<pre><code>+ (void)load {
-    SEL originalSelector = @selector(original_Method);
-    SEL swizzledSelector = @selector(swizzled_Method);
-    [self swizzleInstanceMethod:[MyObj <span class="class"><span class="keyword">class</span>] <span class="title">originSelector</span>:<span class="typename">originalSelector otherSelector:swizzledSelector];</span></span>
-}
-
-- (void)swizzled_Method {
-    <span class="comment">// do stuff</span>
-    [self original_Method];
-    <span class="comment">// do stuff</span>
-}
-
-+ (void)swizzleInstanceMethod:(Class)<span class="class"><span class="keyword">class</span> <span class="title">originSelector</span>:<span class="typename"></span></span>(SEL)originSelector otherSelector:(SEL)otherSelector {
-    Method otherMehtod = class_getInstanceMethod(<span class="class"><span class="keyword">class</span>, <span class="typename">otherSelector);</span></span>
-    Method originMehtod = class_getInstanceMethod(<span class="class"><span class="keyword">class</span>, <span class="typename">originSelector);</span></span>
-
-    BOOL didAddMethod = class_addMethod(<span class="class"><span class="keyword">class</span>,
-                                        <span class="typename">originSelector</span>,
-                                        <span class="typename">method_getImplementation</span></span>(otherMehtod),
-                                        method_getTypeEncoding(otherMehtod));
-    <span class="keyword">if</span> (didAddMethod) {
-        class_replaceMethod(<span class="class"><span class="keyword">class</span>,
-                            <span class="typename">otherSelector</span>,
-                            <span class="typename">method_getImplementation</span></span>(originMehtod),
-                            method_getTypeEncoding(originMehtod));
-    }
-    <span class="keyword">else</span> {
-        <span class="comment">// 交换2个方法的实现</span>
-        method_exchangeImplementations(otherMehtod, originMehtod);
-    }
-}
-</code></pre><h4 id="效果-3">效果</h4><ul>
+<h4 id="实践-3">实践</h4><p>Objc 本身支持为类添加扩展(Category)，而不会对原有类本身造成不好的影响。Category 中的方法成为了类的一部分，可以被其子类继承。这些额外的方法是动态添加的，不同于匿名扩展(Extension)在编译期绑定，所以要谨慎防止添加的方法和原有方法产生命名冲突，否则扩展中的方法存在于方法列表中更靠前的位置，在原有类查找方法列表时优先被发现，进而会覆盖掉原有方法的实现。在类拓展中运用方法调剂可以在不改变组件(Component)接口的前提下，实现动态添加职责的效果，如下代码所示：<br>    <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">+ (void)load &#123;</span><br><span class="line">    SEL originalSelector = @selector(original_Method);</span><br><span class="line">       SEL swizzledSelector = @selector(swizzled_Method);</span><br><span class="line">       [self swizzleInstanceMethod:[MyObj <span class="class"><span class="keyword">class</span>] <span class="title">originSelector</span>:<span class="typename">originalSelector otherSelector:swizzledSelector];</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)swizzled_Method &#123;</span><br><span class="line">       <span class="comment">// do stuff</span></span><br><span class="line">       [self original_Method];</span><br><span class="line">       <span class="comment">// do stuff</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">   + (void)swizzleInstanceMethod:(Class)<span class="class"><span class="keyword">class</span> <span class="title">originSelector</span>:<span class="typename"></span></span>(SEL)originSelector otherSelector:(SEL)otherSelector &#123;</span><br><span class="line">       Method otherMehtod = class_getInstanceMethod(<span class="class"><span class="keyword">class</span>, <span class="typename">otherSelector);</span></span></span><br><span class="line">       Method originMehtod = class_getInstanceMethod(<span class="class"><span class="keyword">class</span>, <span class="typename">originSelector);</span></span></span><br><span class="line">    </span><br><span class="line">       BOOL didAddMethod = class_addMethod(<span class="class"><span class="keyword">class</span>,</span><br><span class="line">                                           <span class="typename">originSelector</span>,</span><br><span class="line">                                           <span class="typename">method_getImplementation</span></span>(otherMehtod),</span><br><span class="line">                                        method_getTypeEncoding(otherMehtod));</span><br><span class="line">       <span class="keyword">if</span> (didAddMethod) &#123;</span><br><span class="line">           class_replaceMethod(<span class="class"><span class="keyword">class</span>,</span><br><span class="line">                            <span class="typename">otherSelector</span>,</span><br><span class="line">                            <span class="typename">method_getImplementation</span></span>(originMehtod),</span><br><span class="line">                            method_getTypeEncoding(originMehtod));</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="comment">// 交换2个方法的实现</span></span><br><span class="line">           method_exchangeImplementations(otherMehtod, originMehtod);</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="效果-3">效果</h4><ul>
 <li>提供了更加灵活地向对象添加职责的方式。</li>
 <li>保持了组件(Component)类的简单性，避免了赋予组件类太多的功能。</li>
 </ul>
 <h3 id="外观">外观</h3><h4 id="定义-4">定义</h4><p>为子系统的一组接口提供一个一致的界面，外观(Facade)模式定义了一个高层接口，这个接口使得这一子系统更容易使用。</p>
 <h4 id="类图-4">类图</h4><p><img src="http://7xqdn8.com1.z0.glb.clouddn.com/外观.png" alt="外观"><br>外观(Facade)负责转发消息给子系统(Subsystem classes)，子系统实现功能，处理外观(Facade)指派的任务。</p>
-<h4 id="实践-4">实践</h4><p>三方开源库 SDWebImage 用一句代码封装了下载图片的操作，如下：    </p>
-<pre><code><span class="collection">[imageView sd_setImageWithURL:<span class="collection">[NSURL URLWithString:@<span class="string">"http://www.domain.com/path/to/image.jpg"</span>]</span>
-             placeholderImage:<span class="collection">[UIImage imageNamed:@<span class="string">"placeholder.png"</span>]</span>]</span><span class="comment">;</span>
-</code></pre><p>这个对用户来说极为简单的 API 封装了其内部子系统的协同行为。在这次调用中，内部包括 UIImageView(WebCache) / UIView(WebCache) / SDWebImageManager / SDImageCache / SDWebImageDownloader 在内的类参与了整个下载过程，而这些类中复杂的操作都不需要客户去处理。其具体时序图如下图所示：<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/SDWebImage.png" alt="SDWebImage"></p>
+<h4 id="实践-4">实践</h4><p>三方开源库 SDWebImage 用一句代码封装了下载图片的操作，如下：<br>    <figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="collection">[imageView sd_setImageWithURL:<span class="collection">[NSURL URLWithString:@<span class="string">"http://www.domain.com/path/to/image.jpg"</span>]</span></span><br><span class="line">             placeholderImage:<span class="collection">[UIImage imageNamed:@<span class="string">"placeholder.png"</span>]</span>]</span><span class="comment">;</span></span><br></pre></td></tr></table></figure></p>
+<p>这个对用户来说极为简单的 API 封装了其内部子系统的协同行为。在这次调用中，内部包括 UIImageView(WebCache) / UIView(WebCache) / SDWebImageManager / SDImageCache / SDWebImageDownloader 在内的类参与了整个下载过程，而这些类中复杂的操作都不需要客户去处理。其具体时序图如下图所示：<br><img src="http://7xqdn8.com1.z0.glb.clouddn.com/SDWebImage.png" alt="SDWebImage"></p>
 <h4 id="效果-4">效果</h4><ul>
 <li>为复杂的子系统提供了一个简单的接口，减少了客户要处理的对象数目。</li>
 <li>实现子系统与客户及其他子系统的松耦合，提高子系统独立性和可移植性。</li>
